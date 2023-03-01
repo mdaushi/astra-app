@@ -26,39 +26,27 @@ class EditPegawai extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 
-    // protected function handleRecordUpdate(Model $record, array $data): Model
-    // {
-    //     DB::beginTransaction();
-    //     try {
-    //         $userCreated = $this->updateUserBeforeCreatePegawai($data, $data['user_id']);
-    //         // $data['user_id'] = $userCreated->id;
-            
-    //         $pegawai = static::getModel()::update([
-    //             'nama' => $data['nama']
-    //         ]);
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        DB::beginTransaction();
+        try {
+            $this->updateUserBeforeUpdatePegawai($data, $record['user_id']);
+            // $data['user_id'] = $userCreated->id;
+            $record->update($data);
 
-    //         DB::commit();
-    //         return $pegawai;
-    //     } catch (\Throwable $th) {
-    //         DB::rollBack();
-    //     }
-    // }
+            DB::commit();
+            return $record;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+    }
 
-    // private function updateUserBeforeCreatePegawai(array $data, $id)
-    // {
-    //     DB::beginTransaction();
-    //     try {
-    //         $user = User::find($id)->update([
-    //             'name' => $data['nama'],
-    //             'email' => $data['email'],
-    //         ])->syncRoles($data['role']);
-
-    //         DB::commit();
-
-    //         return $user;
-    //     } catch (\Throwable $th) {
-    //         DB::rollBack();
-    //     }
-    // }
+    private function updateUserBeforeUpdatePegawai(array $data, $id)
+    {
+        $user = User::find($id);
+        $user->name = $data['nama'];
+        $user->syncRoles($data['role']);
+        $user->save();       
+    }
 
 }

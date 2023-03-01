@@ -74,6 +74,7 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                         Forms\Components\TextInput::make('email')
                             ->unique(table: User::class)
                             ->required()
+                            ->hidden(fn (Page $livewire) => $livewire instanceof EditPegawai)
                             ->maxLength(255),
                         Forms\Components\TextInput::make('password')
                             ->password()
@@ -86,7 +87,7 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                             ->searchable()
                     ])
                     ->columns(2)
-                    ->hidden(fn (Page $livewire) => $livewire instanceof EditPegawai),
+                    // ->hidden(fn (Page $livewire) => $livewire instanceof EditPegawai),
             ]);
     }
 
@@ -101,10 +102,10 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('kode_area'),
                 Tables\Columns\TextColumn::make('area'),
                 Tables\Columns\ImageColumn::make('picture'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime(),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime(),
             ])
             ->filters([
                 //
