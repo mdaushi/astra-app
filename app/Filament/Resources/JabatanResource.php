@@ -70,5 +70,17 @@ class JabatanResource extends Resource
             'create' => Pages\CreateJabatan::route('/create'),
             'edit' => Pages\EditJabatan::route('/{record}/edit'),
         ];
-    }    
+    }   
+    
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+        ];
+    }
 }
