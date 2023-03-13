@@ -4,24 +4,23 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Golongan;
-use App\Models\Rekening;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\PengajuanPerjalananDinas;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
-use App\Filament\Resources\PengajuanPerjalananDinasResource\RelationManagers;
-use App\Filament\Resources\PengajuanPerjalananDinasResource\RelationManagers\KegiatanPerjalananDinasRelationManager;
 
 class PengajuanPerjalananDinasResource extends Resource
 {
     protected static ?string $model = PengajuanPerjalananDinas::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return static::$model::listPengajuanWithAuthorization();
+    }
 
     public static function form(Form $form): Form
     {

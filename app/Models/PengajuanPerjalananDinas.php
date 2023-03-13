@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +21,11 @@ class PengajuanPerjalananDinas extends Model
     ];
 
     protected $appends = ['kegiatan'];
+
+    protected $rolesCanViewAllPengajuan = [
+        'admin',
+        'ga'
+    ];
 
     /**
      * Get all of the kegiatan for the PengajuanPerjalananDinas
@@ -57,5 +62,37 @@ class PengajuanPerjalananDinas extends Model
     public function rekening(): BelongsTo
     {
         return $this->belongsTo(Rekening::class, 'no_rekening', 'rekening');
+    }
+
+    /**
+     * Get the pegawai that owns the PengajuanPerjalananDinas
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pegawai(): BelongsTo
+    {
+        return $this->belongsTo(Pegawai::class);
+    }
+
+    /**
+     * Scope a query to get pengajuan.
+     */
+    public function scopeListPengajuanWithAuthorization(Builder $query): void
+    {
+        $this->authorizationPengjuan($query);
+    }
+
+    private function authorizationPengjuan($query): Builder
+    {
+        if($this->canViewAllPengajuan()){
+            return $query;
+        }
+        return $query->whereBelongsTo(auth()->user()->pegawai);;
+    }
+
+    private function canViewAllPengajuan()
+    {
+        $roleUser = auth()->user()->roles()->first()->name;
+        return in_array(strtolower($roleUser), $this->rolesCanViewAllPengajuan);
     }
 }
