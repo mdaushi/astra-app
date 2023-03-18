@@ -115,14 +115,23 @@ class PengajuanPerjalananDinasResource extends Resource
                 // Tables\Columns\TextColumn::make('golongan'),
                 Tables\Columns\TextColumn::make('penginapan'),
                 Tables\Columns\TextColumn::make('payment'),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('sign_user_at')
                     ->label('Dibuat')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
+                        $state = $column->getState();
+                 
+                        if (strlen($state) == null) {
+                            return 'Pengajuan belum tersubmit';
+                        }
+                 
+                        return 'Pengajuan tersubmit pada '.$state;
+                    }),
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
                         'danger' => '-',
-                        'info' => config('helper.status_pengajuan.draft'),
+                        'secondary' => config('helper.status_pengajuan.draft'),
                         'warning' => config('helper.status_pengajuan.chief'),
                         'primary' => config('helper.status_pengajuan.hrd'),
                         'success' => config('helper.status_pengajuan.ga'),
