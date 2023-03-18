@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +27,8 @@ class PengajuanPerjalananDinas extends Model
     protected $rolesCanViewAllPengajuan = [
         'admin',
         'ga',
-        'chief'
+        'chief',
+        'hrd'
     ];
 
     protected $roleWithColumnFilter = [
@@ -156,4 +159,56 @@ class PengajuanPerjalananDinas extends Model
 
         }
     }
+
+    public function roleCanApproved(): bool
+    {
+        $roleUser = auth()->user()->roles()->first()->name;
+        return in_array(strtolower($roleUser), array_keys($this->roleWithColumnFilter));
+    }
+
+    public function disableByRole()
+    {
+        $roleUser = auth()->user()->roles()->first()->name;
+        $column = 'sign_' . strtolower($roleUser) . '_at';
+
+        return $this->{$column} ? true : false;
+    }
+
+    public function processApprove($role)
+    {
+        $methodsApprove = [
+            'chief' => 'approve'.ucfirst($role),
+            'hrd' => 'approve'.ucfirst($role),
+            'ga' => 'approve'.ucfirst($role)
+        ];
+
+        if(!array_key_exists($role, $methodsApprove)){
+            throw new Exception('role tidak diizinkan');
+        }
+
+        $this->{$methodsApprove[$role]}();
+
+    }
+
+    public function approveChief()
+    {
+        $this->sign_chief_at = Carbon::now();
+        $this->nama_chief_signed = auth()->user()->pegawai->nama;
+        $this->save();
+    }
+
+    public function approveHrd()
+    {
+        $this->sign_hrd_at = Carbon::now();
+        $this->nama_hrd_signed = auth()->user()->pegawai->nama;
+        $this->save();
+    }
+
+    public function approveGa()
+    {
+        $this->sign_ga_at = Carbon::now();
+        $this->nama_ga_signed = auth()->user()->pegawai->nama;
+        $this->save();
+    }
+     
 }

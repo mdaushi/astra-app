@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Support\Facades\DB;
 
 class ViewPengajuanPerjalananDinas extends ViewRecord
 {
@@ -23,6 +24,13 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
                 ->hidden(fn (): bool => $this->record->sign_user_at != null),
             Actions\EditAction::make()
                 ->hidden(fn (): bool => $this->record->sign_user_at != null),
+            Actions\Action::make('approve')
+                ->color('success')
+                ->requiresConfirmation()
+                ->action('approve')
+                ->modalSubheading('Sebelum approve, pasikan anda telah membaca seluruh isi pengajuan ini')
+                ->hidden(fn(): bool => !$this->record->roleCanApproved())
+                ->disabled(fn(): bool => $this->record->disableByRole()),
         ];
     }
 
@@ -38,6 +46,28 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
                 ->send();
 
         } catch (\Throwable $th) {
+            Notification::make()
+                ->title('Error, ada kendala')
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function approve(): void
+    {
+        $roleUser = auth()->user()->roles()->first()->name;
+        DB::beginTransaction();
+        try {
+            $this->record->processApprove(strtolower($roleUser));
+
+            DB::commit();
+            Notification::make()
+                ->title('Pengajuan berhasil diapprove')
+                ->success()
+                ->send();
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
             Notification::make()
                 ->title('Error, ada kendala')
                 ->danger()
