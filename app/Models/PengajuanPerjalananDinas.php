@@ -24,7 +24,14 @@ class PengajuanPerjalananDinas extends Model
 
     protected $rolesCanViewAllPengajuan = [
         'admin',
-        'ga'
+        'ga',
+        'chief'
+    ];
+
+    protected $roleWithColumnFilter = [
+        'chief' => 'sign_user_at',
+        'hrd' => 'sign_chief_at',
+        'ga' => 'sign_hrd_at',
     ];
 
     /**
@@ -112,7 +119,7 @@ class PengajuanPerjalananDinas extends Model
     private function authorizationPengjuan($query): Builder
     {
         if($this->canViewAllPengajuan()){
-            return $query;
+            return $this->authorizationWhereRole($query);;
         }
         return $query->whereBelongsTo(auth()->user()->pegawai);;
     }
@@ -121,5 +128,32 @@ class PengajuanPerjalananDinas extends Model
     {
         $roleUser = auth()->user()->roles()->first()->name;
         return in_array(strtolower($roleUser), $this->rolesCanViewAllPengajuan);
+    }
+
+    private function authorizationWhereRole($query)
+    {
+        $roleUser = auth()->user()->roles()->first()->name;
+        $columnWhere = match (strtolower($roleUser)) {
+            $this->whereColumn(false) => $this->whereColumn(true),
+            default => null
+        };
+
+        return $query->whereNotNull($columnWhere);
+    }
+
+    /**
+     * foreach role untuk filter pengajuan
+     * @param bool $column true if return column, false if return role
+     */
+    private function whereColumn(bool $column)
+    {
+        $roleUser = auth()->user()->roles()->first()->name;
+        foreach ($this->roleWithColumnFilter as $key => $value ) {
+            if(strtolower($roleUser) == strtolower($key)){
+                $result = $column == true ? strtolower($value) : strtolower($key);
+                return $result;
+            }
+
+        }
     }
 }

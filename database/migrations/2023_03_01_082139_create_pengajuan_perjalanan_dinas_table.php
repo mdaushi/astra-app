@@ -34,7 +34,7 @@ return new class extends Migration
             $table->timestamp('sign_hrd_at')->nullable();
             $table->string('nama_hrd_signed')->nullable();
 
-            $table->timestamp('sing_ga_at')->nullable();
+            $table->timestamp('sign_ga_at')->nullable();
             $table->string('nama_ga_signed')->nullable();
 
             $table->timestamps();
