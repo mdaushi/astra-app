@@ -130,8 +130,8 @@ class PengajuanPerjalananDinasResource extends Resource
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
-                        'danger' => '-',
-                        'secondary' => config('helper.status_pengajuan.draft'),
+                        'success' => 'Disetujui',
+                        'danger' => config('helper.status_pengajuan.draft'),
                         'warning' => config('helper.status_pengajuan.chief'),
                         'primary' => config('helper.status_pengajuan.hrd'),
                         'success' => config('helper.status_pengajuan.ga'),

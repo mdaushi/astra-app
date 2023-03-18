@@ -80,12 +80,12 @@ class PengajuanPerjalananDinas extends Model
                     return config('helper.status_pengajuan.waiting-hrd');
                 }
 
-                else if(!$this->sing_ga_at){
+                else if(!$this->sign_ga_at){
                     return config('helper.status_pengajuan.waiting-ga');
                 }
 
                 else {
-                    return '-';
+                    return 'Disetujui';
                 }
             }
         );
