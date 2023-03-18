@@ -20,7 +20,7 @@ class PengajuanPerjalananDinas extends Model
         'no_surat' => 'integer'
     ];
 
-    protected $appends = ['kegiatan'];
+    protected $appends = ['kegiatan', 'status'];
 
     protected $rolesCanViewAllPengajuan = [
         'admin',
@@ -51,6 +51,33 @@ class PengajuanPerjalananDinas extends Model
     {
         return new Attribute(
             get: fn () => $this->kegiatan_perjalanan_dinas,
+        );
+    }
+
+    protected function status(): Attribute
+    {
+        return new Attribute(
+            get: function(){
+                if(!$this->sign_user_at){
+                    return config('helper.status_pengajuan.draft');
+                }
+
+                else if(!$this->sign_chief_at){
+                    return config('helper.status_pengajuan.waiting-chief');
+                }
+
+                else if(!$this->sign_hrd_at){
+                    return config('helper.status_pengajuan.waiting-hrd');
+                }
+
+                else if(!$this->sing_ga_at){
+                    return config('helper.status_pengajuan.waiting-ga');
+                }
+
+                else {
+                    return '-';
+                }
+            }
         );
     }
 

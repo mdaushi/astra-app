@@ -112,12 +112,21 @@ class PengajuanPerjalananDinasResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('no_surat'),
                 Tables\Columns\TextColumn::make('nama'),
-                Tables\Columns\TextColumn::make('golongan'),
+                // Tables\Columns\TextColumn::make('golongan'),
                 Tables\Columns\TextColumn::make('penginapan'),
                 Tables\Columns\TextColumn::make('payment'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime(),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label('Status')
+                    ->colors([
+                        'danger' => '-',
+                        'info' => config('helper.status_pengajuan.draft'),
+                        'warning' => config('helper.status_pengajuan.chief'),
+                        'primary' => config('helper.status_pengajuan.hrd'),
+                        'success' => config('helper.status_pengajuan.ga'),
+                    ])
             ])
             ->filters([
                 //
