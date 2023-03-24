@@ -163,6 +163,7 @@ class PlanPengajuanPerjalananDinasResource extends Resource
             'create' => Pages\CreatePlanPengajuanPerjalananDinas::route('/create'),
             'edit' => Pages\EditPlanPengajuanPerjalananDinas::route('/{record}/edit'),
             'biaya' => Pages\EstimasiBiayaPengajuanPerjalananDinas::route('/{record}/biaya'),
+            'kalender' => Pages\KalenderPengajuanPerjalananDinas::route('/kalender')
         ];
     }    
 }

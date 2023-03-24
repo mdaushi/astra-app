@@ -14,6 +14,10 @@ class ListPlanPengajuanPerjalananDinas extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\Action::make('kalender')
+                ->label('Kalender')
+                ->color('success')
+                ->url(route('filament.resources.plan-pengajuan-perjalanan-dinas.kalender'))
         ];
     }
 }
