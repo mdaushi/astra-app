@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Filament::registerStyles([
-            'https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/css/evo-calendar.min.css',
+            asset('calendar/evo-calendar.min.css'),
             'https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/css/evo-calendar.royal-navy.css'
         ]);
         
