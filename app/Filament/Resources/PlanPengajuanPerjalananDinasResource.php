@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\PlanPengajuanPerjalananDinas;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\PlanPengajuanPerjalananDinasResource\Pages;
 use App\Filament\Resources\PlanPengajuanPerjalananDinasResource\RelationManagers;
-use App\Models\PlanPengajuanPerjalananDinas;
-use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PlanPengajuanPerjalananDinasResource extends Resource
 {
@@ -150,6 +151,8 @@ class PlanPengajuanPerjalananDinasResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+            ])->headerActions([
+                FilamentExportHeaderAction::make('export')
             ]);
     }
     
