@@ -24,6 +24,7 @@ class GolonganResource extends Resource
     protected static ?string $navigationLabel = 'Golongan';
 
     protected static ?string $pluralLabel = 'Golongan';
+    protected static ?string $slug = 'golongan';
 
     public static function form(Form $form): Form
     {
@@ -31,6 +32,10 @@ class GolonganResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nama')
                     ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('rate_hotel')
+                    ->required()
+                    ->numeric()
                     ->maxLength(255),
             ]);
     }
@@ -40,6 +45,7 @@ class GolonganResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('rate_hotel')->money('idr'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
