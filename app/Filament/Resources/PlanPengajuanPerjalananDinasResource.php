@@ -88,13 +88,17 @@ class PlanPengajuanPerjalananDinasResource extends Resource
                                         Forms\Components\TextInput::make('maskapai')
                                             ->maxLength(255)
                                             ->required(),
-                                            Forms\Components\Select::make('payment_via')
+                                        Forms\Components\Select::make('payment_via')
                                             ->label('Payment Via')
                                             ->options([
                                                 // '    ' => 'Beli Sendiri',
                                                 'ga' => 'GA'
                                             ])
                                             ->searchable()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('transportasi')
+                                            ->maxLength(255)
+                                            ->numeric()
                                             ->required(),
                                     ])
                                     ->columns(2)

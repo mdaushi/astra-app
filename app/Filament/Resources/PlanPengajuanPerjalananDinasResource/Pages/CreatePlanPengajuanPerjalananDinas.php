@@ -8,6 +8,7 @@ use Filament\Pages\Actions;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\PlanPengajuanPerjalananDinasResource;
+use App\Models\Golongan;
 
 class CreatePlanPengajuanPerjalananDinas extends CreateRecord
 {
@@ -38,6 +39,10 @@ class CreatePlanPengajuanPerjalananDinas extends CreateRecord
         $kegiatanAll = [];
         foreach ($data['kegiatan'] as $item) {
             $item['pengajuan_perjalanan_dinas_id'] = $saved->id;
+
+            $rate_hotel = $this->findRateHotel();
+            $item['rate_hotel'] = $rate_hotel;
+
             array_push($kegiatanAll, $item);
         }        
 
@@ -59,6 +64,12 @@ class CreatePlanPengajuanPerjalananDinas extends CreateRecord
             'nama' => $rekening->nama,
             'rekening' => $rekening->rekening
         ];
+    }
+
+    protected function findRateHotel() {
+        $golonganUser = auth()->user()->pegawai->golongan->id;
+        $hotel = Golongan::find($golonganUser)->rate_hotel;
+        return $hotel;
     }
 
     protected function getRedirectUrl(): string

@@ -3,13 +3,14 @@
 namespace App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
 
 use Carbon\Carbon;
+use App\Models\Golongan;
 use App\Models\Rekening;
 use Filament\Pages\Actions;
+use Illuminate\Support\Facades\DB;
+use App\Models\KegiatanPerjalananDinas;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\PengajuanPerjalananDinasResource;
-use App\Models\KegiatanPerjalananDinas;
-use Illuminate\Support\Facades\DB;
 
 class CreatePengajuanPerjalananDinas extends CreateRecord
 {
@@ -40,6 +41,10 @@ class CreatePengajuanPerjalananDinas extends CreateRecord
         $kegiatanAll = [];
         foreach ($data['kegiatan'] as $item) {
             $item['pengajuan_perjalanan_dinas_id'] = $saved->id;
+
+            $rate_hotel = $this->findRateHotel();
+            $item['rate_hotel'] = $rate_hotel;
+
             array_push($kegiatanAll, $item);
         }        
 
@@ -61,6 +66,12 @@ class CreatePengajuanPerjalananDinas extends CreateRecord
             'nama' => $rekening->nama,
             'rekening' => $rekening->rekening
         ];
+    }
+
+    protected function findRateHotel() {
+        $golonganUser = auth()->user()->pegawai->golongan->id;
+        $hotel = Golongan::find($golonganUser)->rate_hotel;
+        return $hotel;
     }
 
     protected function getRedirectUrl(): string

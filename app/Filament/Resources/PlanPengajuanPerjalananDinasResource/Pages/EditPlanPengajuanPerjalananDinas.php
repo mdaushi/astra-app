@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PlanPengajuanPerjalananDinasResource\Pages;
 
 use Carbon\Carbon;
+use App\Models\Golongan;
 use App\Models\Rekening;
 use Filament\Pages\Actions;
 use Illuminate\Database\Eloquent\Model;
@@ -67,6 +68,10 @@ class EditPlanPengajuanPerjalananDinas extends EditRecord
         $kegiatanAll = [];
         foreach ($data['kegiatan'] as $item) {
             $item['pengajuan_perjalanan_dinas_id'] = $record->id;
+
+            $rate_hotel = $this->findRateHotel();
+            $item['rate_hotel'] = $rate_hotel;
+            
             array_push($kegiatanAll, $item);
         }
 
@@ -94,5 +99,11 @@ class EditPlanPengajuanPerjalananDinas extends EditRecord
         $this->getDeletedNotification()?->send();
 
         $this->redirect($this->getDeleteRedirectUrl());
+    }
+
+    protected function findRateHotel() {
+        $golonganUser = auth()->user()->pegawai->golongan->id;
+        $hotel = Golongan::find($golonganUser)->rate_hotel;
+        return $hotel;
     }
 }

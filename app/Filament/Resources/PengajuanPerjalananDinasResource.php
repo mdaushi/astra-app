@@ -99,6 +99,10 @@ class PengajuanPerjalananDinasResource extends Resource
                                             ])
                                             ->searchable()
                                             ->required(),
+                                        Forms\Components\TextInput::make('transportasi')
+                                            ->maxLength(255)
+                                            ->numeric()
+                                            ->required(),
                                     ])
                                     ->columns(2)
                             ])
