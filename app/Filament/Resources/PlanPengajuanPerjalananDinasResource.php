@@ -142,7 +142,7 @@ class PlanPengajuanPerjalananDinasResource extends Resource
                 Tables\Actions\Action::make('ajukan')
                     ->label('Ajukan')
                     ->requiresConfirmation()
-                    ->action('')
+                    ->action('ajukanPlan')
                     ->modalHeading('Teruskan untuk diajukan')
                     ->modalSubheading('anda akan teruskan plan ini untuk diajukan sebagai pengajuan perjalanan dinas')
                     ->modalButton('Iya, teruskan'),
@@ -177,5 +177,5 @@ class PlanPengajuanPerjalananDinasResource extends Resource
             'biaya' => Pages\EstimasiBiayaPengajuanPerjalananDinas::route('/{record}/biaya'),
             'kalender' => Pages\KalenderPengajuanPerjalananDinas::route('/kalender')
         ];
-    }    
+    }
 }
