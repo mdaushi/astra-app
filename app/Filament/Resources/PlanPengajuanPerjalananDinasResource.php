@@ -20,6 +20,11 @@ class PlanPengajuanPerjalananDinasResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return static::$model::listPengajuanWithAuthorization();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
