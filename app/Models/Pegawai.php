@@ -60,4 +60,14 @@ class Pegawai extends Model
     {
         return $this->user->email;
     }
+
+    /**
+     * Get the approvalPaket that owns the Pegawai
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function approvalPaket(): BelongsTo
+    {
+        return $this->belongsTo(ApprovalPaket::class, 'approvals_id');
+    }
 }

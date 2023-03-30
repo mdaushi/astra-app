@@ -68,6 +68,12 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                     ->disk('public')
                     ->directory('picture')
                     ->preserveFilenames(),
+                Forms\Components\Select::make('approvals_id')
+                    ->label('Approvals')
+                    ->required()
+                    ->relationship('approvalPaket', 'kode')
+                    ->preload()
+                    ->searchable(),
                 Forms\Components\Section::make('Akun')
                     ->description('Pembuatan akun diperluhkan untuk dapat mengakses aplikasi ini')
                     ->schema([
