@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Arr;
 
 class PengajuanPerjalananDinas extends Model
 {
@@ -24,18 +25,18 @@ class PengajuanPerjalananDinas extends Model
 
     protected $appends = ['kegiatan', 'status'];
 
-    protected $rolesCanViewAllPengajuan = [
-        'admin',
-        'ga',
-        'chief',
-        'hrd'
-    ];
+    // protected $rolesCanViewAllPengajuan = [
+    //     'admin',
+    //     'ga',
+    //     'chief',
+    //     'hrd'
+    // ];
 
-    protected $roleWithColumnFilter = [
-        'chief' => 'sign_user_at',
-        'hrd' => 'sign_chief_at',
-        'ga' => 'sign_hrd_at',
-    ];
+    // protected $roleWithColumnFilter = [
+    //     'chief' => 'sign_user_at',
+    //     'hrd' => 'sign_chief_at',
+    //     'ga' => 'sign_hrd_at',
+    // ];
 
     /**
      * Get all of the kegiatan for the PengajuanPerjalananDinas
@@ -66,26 +67,33 @@ class PengajuanPerjalananDinas extends Model
 
     protected function status(): Attribute
     {
+        
         return new Attribute(
-            get: function(){
+            get: function() {
+                $order = config('approval.order');
+                $columns = config('approval.roleWithColumnFilter');
+                 
                 if(!$this->sign_user_at){
                     return config('helper.status_pengajuan.draft');
                 }
 
-                else if(!$this->sign_chief_at){
-                    return config('helper.status_pengajuan.waiting-chief');
+                else if(!$this->{$columns[$order[0]]})
+                {
+                    return config('helper.status_pengajuan.waiting-'.$order[0]);
                 }
 
-                else if(!$this->sign_hrd_at){
-                    return config('helper.status_pengajuan.waiting-hrd');
+                else if(!$this->{$columns[$order[1]]})
+                {
+                    return config('helper.status_pengajuan.waiting-'.$order[1]);
                 }
 
-                else if(!$this->sign_ga_at){
-                    return config('helper.status_pengajuan.waiting-ga');
+                else if(!$this->{$columns[$order[2]]})
+                {
+                    return config('helper.status_pengajuan.waiting-'.$order[2]);
                 }
 
                 else {
-                    return 'Disetujui';
+                    return "Disetujui";
                 }
             }
         );
@@ -121,27 +129,77 @@ class PengajuanPerjalananDinas extends Model
 
     private function authorizationPengjuan($query): Builder
     {
-        if($this->canViewAllPengajuan()){
+        if($this->canViewAllPengajuan($query)){
             return $this->authorizationWhereRole($query);;
         }
         return $query->whereBelongsTo(auth()->user()->pegawai);;
     }
 
-    private function canViewAllPengajuan()
+    private function canViewAllPengajuan($query)
     {
         $roleUser = auth()->user()->roles()->first()->name;
-        return in_array(strtolower($roleUser), $this->rolesCanViewAllPengajuan);
+
+        // jika approval, maka get data sesuai pegawainya
+        if(in_array(strtolower($roleUser), config('approval.order'))){
+            return $this->queryHasApproval($query)->exists();
+        }
+
+        return true; //admin
+    }
+
+    private function queryHasApproval($query)
+    {
+        return $query->whereHas('pegawai', function(Builder $query){
+            $query->whereHas('approvalPaket', function(Builder $query){
+                $query->whereHas('approvalsatu', function(Builder $query){
+                    $query->where('npk', auth()->user()->pegawai->npk);
+                });
+                $query->orWhereHas('approvaldua', function(Builder $query){
+                    $query->where('npk', auth()->user()->pegawai->npk);
+                });
+                $query->orWhereHas('approvaltiga', function(Builder $query){
+                    $query->where('npk', auth()->user()->pegawai->npk);
+                });
+            });
+        });
     }
 
     private function authorizationWhereRole($query)
     {
-        $roleUser = auth()->user()->roles()->first()->name;
-        $columnWhere = match (strtolower($roleUser)) {
-            $this->whereColumn(false) => $this->whereColumn(true),
-            default => null
-        };
+        $ordering = $this->orderingApproval();
 
-        return $query->whereNotNull($columnWhere);
+        $query = $this->queryHasApproval($query);
+        
+        if($ordering['order'] == 1){
+            return $query->whereNotNull('sign_user_at');
+        }
+
+        return $query->whereNotNull($ordering['prev_column']);
+
+    }
+
+    private function orderingApproval()
+    {
+        $roleUser = auth()->user()->roles[0]->name;
+        $orders = config('approval.order');
+        $order = Arr::where($orders, function (string|int $value, int $key) use($roleUser) {
+            return $value == strtolower($roleUser);
+        });
+        $order = array_keys($order)[0];
+
+        $roleWithColumnFilter = config('approval.roleWithColumnFilter');
+        $column = $roleWithColumnFilter[strtolower($roleUser)];
+        $columnExcept = Arr::except($roleWithColumnFilter, strtolower($roleUser));
+        $nextColumn = $roleWithColumnFilter[$orders[$order + 1] ?? null ] ?? null;
+        $prevColumn = $roleWithColumnFilter[$orders[$order - 1] ?? null] ?? null;
+        
+        return [
+            'order' => $order+1,
+            'column' => $column,
+            'next_column' => $nextColumn,
+            'prev_column' => $prevColumn,
+            'except' => array_values($columnExcept)
+        ]; 
     }
 
     /**
@@ -151,7 +209,7 @@ class PengajuanPerjalananDinas extends Model
     private function whereColumn(bool $column)
     {
         $roleUser = auth()->user()->roles()->first()->name;
-        foreach ($this->roleWithColumnFilter as $key => $value ) {
+        foreach (config('approval.roleWithColumnFilter') as $key => $value ) {
             if(strtolower($roleUser) == strtolower($key)){
                 $result = $column == true ? strtolower($value) : strtolower($key);
                 return $result;
@@ -163,7 +221,7 @@ class PengajuanPerjalananDinas extends Model
     public function roleCanApproved(): bool
     {
         $roleUser = auth()->user()->roles()->first()->name;
-        return in_array(strtolower($roleUser), array_keys($this->roleWithColumnFilter));
+        return in_array(strtolower($roleUser), array_keys(config('approval.roleWithColumnFilter')));
     }
 
     public function disableByRole()
