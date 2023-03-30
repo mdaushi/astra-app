@@ -166,6 +166,10 @@ class PengajuanPerjalananDinas extends Model
 
     private function authorizationWhereRole($query)
     {
+        if(auth()->user()->roles[0]->name == 'admin'){
+            return $query;
+        }
+        
         $ordering = $this->orderingApproval();
 
         $query = $this->queryHasApproval($query);
