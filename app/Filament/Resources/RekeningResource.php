@@ -25,6 +25,8 @@ class RekeningResource extends Resource
 
     protected static ?string $slug = 'rekening';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
