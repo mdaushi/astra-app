@@ -72,7 +72,7 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                     ->preserveFilenames(),
                 Forms\Components\Select::make('approvals_id')
                     ->label('Approvals')
-                    ->required()
+                    // ->required()
                     ->relationship('approvalPaket', 'kode')
                     ->preload()
                     ->searchable(),
