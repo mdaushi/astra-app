@@ -22,6 +22,8 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'pegawai';
+
     public static function form(Form $form): Form
     {
         return $form

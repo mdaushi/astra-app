@@ -29,6 +29,8 @@ class PegawaiResource extends Resource implements HasShieldPermissions
 
     protected static ?string $pluralLabel = 'Pegawai';
 
+    protected static ?string $navigationGroup = 'pegawai';
+
     public static function form(Form $form): Form
     {
         return $form

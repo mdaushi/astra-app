@@ -20,6 +20,8 @@ class PlanPengajuanPerjalananDinasResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'perjalanan dinas';
+
     public static function getEloquentQuery(): Builder
     {
         return static::$model::listPengajuanWithAuthorization();

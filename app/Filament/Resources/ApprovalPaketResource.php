@@ -26,6 +26,8 @@ class ApprovalPaketResource extends Resource
 
     protected static ?string $slug = 'approval-paket';
 
+    protected static ?string $navigationGroup = 'master';
+
     public static function form(Form $form): Form
     {
         return $form

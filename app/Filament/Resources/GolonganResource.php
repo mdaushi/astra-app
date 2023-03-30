@@ -19,7 +19,7 @@ class GolonganResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'master';
 
     protected static ?string $navigationLabel = 'Golongan';
 

@@ -31,6 +31,14 @@ class AppServiceProvider extends ServiceProvider
             asset('calendar/evo-calendar.min.css'),
             'https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/css/evo-calendar.royal-navy.css'
         ]);
+
+        Filament::serving(function () {
+            Filament::registerNavigationGroups([
+                'perjalanan dinas',
+                'pegawai',
+                'master'
+            ]);
+        });
         
     }
 }
