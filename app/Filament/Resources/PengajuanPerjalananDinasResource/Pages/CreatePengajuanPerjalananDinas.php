@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
 
+use App\Events\ApprovalProcessed;
 use Carbon\Carbon;
 use App\Models\Golongan;
 use App\Models\Rekening;
@@ -35,22 +36,34 @@ class CreatePengajuanPerjalananDinas extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
+        DB::beginTransaction();
 
-        $saved = static::getModel()::create($data);
-        
-        $kegiatanAll = [];
-        foreach ($data['kegiatan'] as $item) {
-            $item['pengajuan_perjalanan_dinas_id'] = $saved->id;
+        try {
+            $saved = static::getModel()::create($data);
+            
+            $kegiatanAll = [];
+            foreach ($data['kegiatan'] as $item) {
+                $item['pengajuan_perjalanan_dinas_id'] = $saved->id;
+    
+                $rate_hotel = $this->findRateHotel();
+                $item['rate_hotel'] = $rate_hotel;
+    
+                array_push($kegiatanAll, $item);
+            }        
+    
+            $saved->kegiatan_perjalanan_dinas()->sync($kegiatanAll);
+    
+            // approval notification
+            ApprovalProcessed::dispatch($saved);
+    
+            DB::commit();
+            
+            return $saved;
+                
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
 
-            $rate_hotel = $this->findRateHotel();
-            $item['rate_hotel'] = $rate_hotel;
-
-            array_push($kegiatanAll, $item);
-        }        
-
-        $saved->kegiatan_perjalanan_dinas()->sync($kegiatanAll);
-        // KegiatanPerjalananDinas::insert($kegiatanAll);
-        return $saved;
     }
 
     protected function getMaxNoSurat()

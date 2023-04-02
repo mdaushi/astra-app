@@ -143,8 +143,11 @@ class PengajuanPerjalananDinas extends Model
         if(in_array(strtolower($roleUser), config('approval.order'))){
             return $this->queryHasApproval($query)->exists();
         }
+        else if($roleUser == 'admin'){
+            return true;
+        }
 
-        return true; //admin
+        return false; //user
     }
 
     private function queryHasApproval($query)

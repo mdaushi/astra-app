@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
 
+use App\Events\ApprovalProcessed;
 use App\Filament\Resources\PengajuanPerjalananDinasResource;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
@@ -60,6 +61,9 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
         try {
             $this->record->processApprove(strtolower($roleUser));
 
+            // send mail approval
+            ApprovalProcessed::dispatch($this->record);
+            
             DB::commit();
             Notification::make()
                 ->title('Pengajuan berhasil diapprove')
