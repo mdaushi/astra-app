@@ -53,16 +53,19 @@ class SendPDBarengNotification
             $pengajuanAll = PengajuanPerjalananDinas::whereIn('id', $pluckPengajuanId)->get(); 
 
             $nameAllPegawai = $pengajuanAll->pluck('nama')->toArray();
-            $namingSendding = collect($nameAllPegawai)->reject(function(string $value, int $key) use($pengajuan){
-                return $value == $pengajuan->nama;
-            })->values()->all();
-
-            $nameSendingString = implode(', ', $namingSendding);
-
+            
             foreach ($pengajuanAll as $key => $value) {
+
+                $namingSendding = collect($nameAllPegawai)->reject(function(string $data, int $key) use($value){
+                    return $data == $value->nama;
+                })->values()->all();
+    
+                $nameSendingString = implode(', ', $namingSendding);
+
                 $pegawai = $value->pegawai;
                 $user = User::find($pegawai->user->id);
-                Notification::send($user, new PDBarengNotification($pegawai->user->nama, $nameSendingString));
+                
+                Notification::send($user, new PDBarengNotification($pegawai->user->name, $nameSendingString));
             }
         }
     }
