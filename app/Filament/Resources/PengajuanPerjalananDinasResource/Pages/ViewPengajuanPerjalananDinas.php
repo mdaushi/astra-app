@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
 
 use App\Events\ApprovalProcessed;
+use App\Events\PDBarengProcessed;
 use App\Filament\Resources\PengajuanPerjalananDinasResource;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
@@ -63,6 +64,9 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
 
             // send mail approval
             ApprovalProcessed::dispatch($this->record);
+
+            // send notif pd bersama
+            PDBarengProcessed::dispatch($this->record);
             
             DB::commit();
             Notification::make()

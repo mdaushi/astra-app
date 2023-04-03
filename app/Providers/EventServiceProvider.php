@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\ApprovalProcessed;
+use App\Events\PDBarengProcessed;
 use App\Listeners\SendApprovalNotification;
+use App\Listeners\SendPDBarengNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +25,10 @@ class EventServiceProvider extends ServiceProvider
         
         ApprovalProcessed::class => [
             SendApprovalNotification::class
+        ],
+
+        PDBarengProcessed::class => [
+            SendPDBarengNotification::class
         ]
     ];
 
