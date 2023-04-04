@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8dae65462f1749d85e135bd2d51264cd",
+    "content-hash": "af4e92be7941e66a3296d13d492d1449",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -77,23 +77,23 @@
         },
         {
             "name": "alperenersoy/filament-export",
-            "version": "v0.2.8",
+            "version": "v0.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alperenersoy/filament-export.git",
-                "reference": "f1047d3843efd749efa339b708e3c1a779b721bd"
+                "reference": "005f16a1e549c15c26318e1d648926ab2383b3fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alperenersoy/filament-export/zipball/f1047d3843efd749efa339b708e3c1a779b721bd",
-                "reference": "f1047d3843efd749efa339b708e3c1a779b721bd",
+                "url": "https://api.github.com/repos/alperenersoy/filament-export/zipball/005f16a1e549c15c26318e1d648926ab2383b3fa",
+                "reference": "005f16a1e549c15c26318e1d648926ab2383b3fa",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/laravel-dompdf": "^2.0",
                 "filament/tables": "^2.0",
                 "php": "^8.0",
-                "spatie/simple-excel": "^3"
+                "spatie/simple-excel": "^3.0 >=3.2.0"
             },
             "require-dev": {
                 "filament/filament": "^2.0",
@@ -127,9 +127,9 @@
             "description": "Customizable export and print functionality for Filament Admin Panel",
             "support": {
                 "issues": "https://github.com/alperenersoy/filament-export/issues",
-                "source": "https://github.com/alperenersoy/filament-export/tree/v0.2.8"
+                "source": "https://github.com/alperenersoy/filament-export/tree/v0.2.9"
             },
-            "time": "2023-02-08T19:44:03+00:00"
+            "time": "2023-03-28T20:21:52+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
