@@ -21,7 +21,12 @@ class Pegawai extends Model
         'area',
         'user_id',
         'jabatan_id',
-        'picture'
+        'picture',
+        'is_faktur_ekspedisi'
+    ];
+
+    protected $casts = [
+        'is_faktur_ekspedisi' => 'boolean',
     ];
 
     protected $appends = ['email'];

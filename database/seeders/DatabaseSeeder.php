@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ShieldSeeder::class,
+            AkunKurir::class
         ]);
         // \App\Models\User::factory(10)->create();
 

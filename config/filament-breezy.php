@@ -1,5 +1,8 @@
 <?php
 // config for JeffGreco13/FilamentBreezy
+
+use App\Filament\Pages\MyProfile;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -99,7 +102,8 @@ return [
     |--------------------------------------------------------------------------
     | Path to Profile page component.
     */
-    "profile_page_component_path" => \JeffGreco13\FilamentBreezy\Pages\MyProfile::class,
+    // "profile_page_component_path" => \JeffGreco13\FilamentBreezy\Pages\MyProfile::class,
+    "profile_page_component_path" => MyProfile::class,
     /*
     |--------------------------------------------------------------------------
     | Where to redirect the user after registration.

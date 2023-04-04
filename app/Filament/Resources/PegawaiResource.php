@@ -94,8 +94,17 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                             ->options(Role::all()->pluck('name', 'id'))
                             ->searchable()
                     ])
+                    ->columns(2),
+                Forms\Components\Section::make('Ekspedisi')
+                    ->description('Pegawai ini mengirim barang dengan jenis Faktur/ tujuan dan alamat yang sama setiap harinya')
+                    ->schema([
+                        Forms\Components\Toggle::make('is_faktur_ekspedisi')
+                            ->onIcon('heroicon-s-lightning-bolt')
+                            ->offIcon('heroicon-s-user')
+                            ->label('Faktur'),
+                    ])
                     ->columns(2)
-                    // ->hidden(fn (Page $livewire) => $livewire instanceof EditPegawai),
+                    
             ]);
     }
 
