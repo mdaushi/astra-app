@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EkspedisiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EkspedisiResource\RelationManagers;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
 class EkspedisiResource extends Resource
 {
@@ -147,6 +148,8 @@ class EkspedisiResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+            ])->headerActions([
+                FilamentExportHeaderAction::make('export')
             ]);
     }
     
