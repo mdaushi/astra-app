@@ -51,16 +51,17 @@ class EkspedisiResource extends Resource
                         }
                     })
                     ->searchable(),
-                Forms\Components\select::make('ekspedisi')
+                Forms\Components\Select::make('wilayah')
                     ->required()
-                    ->options([
-                        'pos' => 'POS',
-                        'pandusiwi' => 'Pandusiwi',
-                        'jne' => 'JNE',
-                        'kgp' => 'KGP',
-                        'lion parcel' => 'Lion parcel'
-                    ])
-                    ->searchable(),
+                    ->options(config('wilayah.wilayah'))
+                    ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function($state, callable $set) {
+                        $set('ekspedisi', config('wilayah.ekspedisi')[$state] ?? '');
+                    }),
+                Forms\Components\TextInput::make('ekspedisi')
+                    ->required()
+                    ->disabled(),
                 Forms\Components\DatePicker::make('tanggal')
                     ->required(),
                 Forms\Components\TextInput::make('tempat_tujuan')
@@ -86,8 +87,8 @@ class EkspedisiResource extends Resource
                 Forms\Components\select::make('jenis_layanan')
                     ->required()
                     ->options([
-                        'yes' => 'YES',
-                        'ods' => 'ODS',
+                        // 'yes' => 'YES',
+                        // 'ods' => 'ODS',
                         'reguler' => 'REGULER'
                     ])
                     ->searchable(),
@@ -113,6 +114,7 @@ class EkspedisiResource extends Resource
                 Tables\Columns\TextColumn::make('jenis_paket'),
                 Tables\Columns\TextColumn::make('jenis_layanan'),
                 Tables\Columns\TextColumn::make('no_resi'),
+                Tables\Columns\TextColumn::make('status')
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime(),
                 // Tables\Columns\TextColumn::make('updated_at')
@@ -143,7 +145,29 @@ class EkspedisiResource extends Resource
                             ->label('No Resi')
                             ->required(),
                     ])
-                    ->visible(fn (Ekspedisi $record): bool => auth()->user()->can('resi_ekspedisi', $record))
+                    ->visible(fn (Ekspedisi $record): bool => auth()->user()->can('resi_ekspedisi', $record)),
+                Tables\Actions\Action::make('status')
+                    ->label('Update Status')
+                    ->requiresConfirmation()
+                    ->form([
+                        Forms\Components\Select::make('status')
+                            ->label('Status')
+                            ->options([
+                                'menunggu dipickup' => 'Menunggu dipickup',
+                                'sudah dipickup' => 'Sudah dipickup'
+                            ])
+                    ])
+                    ->action(function (Ekspedisi $record, array $data): void {
+                        $record->update([
+                            'status' => $data['status']
+                        ]);
+
+                        Notification::make() 
+                            ->title('Saved successfully')
+                            ->success()
+                            ->send(); 
+                    })
+                    ->visible(fn (Ekspedisi $record): bool => auth()->user()->can('resi_ekspedisi', $record)),
 
             ])
             ->bulkActions([
