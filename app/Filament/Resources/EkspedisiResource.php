@@ -34,7 +34,7 @@ class EkspedisiResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\select::make('kategori')
+                Forms\Components\Select::make('kategori')
                     ->required()
                     ->options([
                         'nonfaktur' => 'Non Faktur',

@@ -19,6 +19,8 @@ class PengajuanPerjalananDinasResource extends Resource
 
     protected static ?string $navigationGroup = 'perjalanan dinas';
 
+    protected static ?string $navigationLabel = 'Perjalanan Dinas';
+
     public static function getEloquentQuery(): Builder
     {
         return static::$model::listPengajuanWithAuthorization();

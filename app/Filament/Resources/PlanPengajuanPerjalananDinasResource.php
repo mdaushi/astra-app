@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\PlanPengajuanPerjalananDinasResource\Pages;
 use App\Filament\Resources\PlanPengajuanPerjalananDinasResource\RelationManagers;
+use Closure;
+
 
 class PlanPengajuanPerjalananDinasResource extends Resource
 {
@@ -87,12 +89,22 @@ class PlanPengajuanPerjalananDinasResource extends Resource
                                             ->label('Kegiatan Pokok')
                                             ->maxLength(255)
                                             ->required(),
+                                        Forms\Components\Select::make('mode_transportasi')
+                                            ->label('Mode Transportasi')
+                                            ->options([
+                                                'darat' => 'Darat',
+                                                'udara' => 'Udara'
+                                            ])
+                                            ->searchable()
+                                            ->required()
+                                            ->reactive(),
                                         Forms\Components\TimePicker::make('berangkat_jam')
                                             ->label('Jam Berangkat')
+                                            ->hidden(fn(Closure $get) => $get('mode_transportasi') !== 'udara')
                                             ->required(),
-                                        Forms\Components\TimePicker::make('tiba_jam')
-                                            ->label('Jam Tiba')
-                                            ->required(),
+                                        // Forms\Components\TimePicker::make('tiba_jam')
+                                        //     ->label('Jam Tiba')
+                                        //     ->required(),
                                         Forms\Components\TextInput::make('maskapai')
                                             ->maxLength(255)
                                             ->required(),
@@ -105,6 +117,7 @@ class PlanPengajuanPerjalananDinasResource extends Resource
                                             ->searchable()
                                             ->required(),
                                         Forms\Components\TextInput::make('transportasi')
+                                            ->label('Estimasi Biaya Transportasi')
                                             ->maxLength(255)
                                             ->numeric()
                                             ->required(),
