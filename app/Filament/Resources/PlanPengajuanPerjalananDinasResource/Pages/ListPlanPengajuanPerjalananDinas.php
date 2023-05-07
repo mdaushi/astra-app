@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PlanPengajuanPerjalananDinasResource\Pages;
 
 use Filament\Pages\Actions;
+use App\Events\ApprovalProcessed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PengajuanPerjalananDinas;
@@ -41,6 +42,9 @@ class ListPlanPengajuanPerjalananDinas extends ListRecords
                 $newKegiatan = $item->replicate()->toArray();
                 $pengajuan->kegiatan_perjalanan_dinas()->sync([$newKegiatan], false);
             }
+
+            // approval notification
+            ApprovalProcessed::dispatch($pengajuan);
 
             DB::commit();
 
