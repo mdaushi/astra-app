@@ -55,7 +55,7 @@ class ListPlanPengajuanPerjalananDinas extends ListRecords
         } catch (\Throwable $th) {
             DB::rollBack();
 
-            dd($th->getMessage());
+            // dd($th->getMessage());
 
             Notification::make() 
             ->title('Gagal diajukan')
