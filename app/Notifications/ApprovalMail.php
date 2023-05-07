@@ -42,7 +42,7 @@ class ApprovalMail extends Notification
         return (new MailMessage)
                     ->subject('Approval Pengajuan Perjalanan Dinas')
                     ->greeting('Hello, ' . $this->userApproval)
-                    ->line('Pegawai ' . $pegawai . ' telah pengajukan perjalanan dinas.')
+                    ->line('Pegawai ' . $pegawai . ' telah mengajukan perjalanan dinas.')
                     ->line('klik tombol dibawah ini untuk approve pengajuan')
                     ->action('Approve Pengajuan', $url)
                     ->line('Terimakasih!');
