@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
 
+use Carbon\Carbon;
+use Filament\Pages\Actions;
 use App\Events\ApprovalProcessed;
 use App\Events\PDBarengProcessed;
-use App\Filament\Resources\PengajuanPerjalananDinasResource;
-use Carbon\Carbon;
-use Filament\Notifications\Notification;
-use Filament\Pages\Actions;
-use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Facades\DB;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\PengajuanPerjalananDinasResource;
+use App\Http\Controllers\ExportController;
 
 class ViewPengajuanPerjalananDinas extends ViewRecord
 {
@@ -33,7 +34,13 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
                 ->modalSubheading('Sebelum approve, pasikan anda telah membaca seluruh isi pengajuan ini')
                 ->hidden(fn(): bool => !$this->record->roleCanApproved())
                 ->disabled(fn(): bool => $this->record->disableByRole()),
-        ];
+
+            Actions\Action::make('print')
+                ->url(function(){
+                    return route('export', ['id' => $this->record]);
+                })
+                ->openUrlInNewTab()
+            ];
     }
 
     public function submit(): void
@@ -81,5 +88,16 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
                 ->danger()
                 ->send();
         }
+    }
+
+    public function print(): void
+    {
+        $datas = $this->record;
+        app()->call([new ExportController, 'export'], ['datas' => $datas]);
+        
+        Notification::make()
+                ->title('Pengajuan terdownload')
+                ->success()
+                ->send();
     }
 }
