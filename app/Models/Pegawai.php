@@ -13,17 +13,19 @@ class Pegawai extends Model
 
     protected $table = 'pegawai';
 
-    protected $fillable = [
-        'nama',
-        'npk',
-        'golongan_id',
-        'kode_area',
-        'area',
-        'user_id',
-        'jabatan_id',
-        'picture',
-        'is_faktur_ekspedisi'
-    ];
+    protected $guarded = [];
+
+    // protected $fillable = [
+    //     'nama',
+    //     'npk',
+    //     'golongan_id',
+    //     'kode_area',
+    //     'area',
+    //     'user_id',
+    //     'jabatan_id',
+    //     'picture',
+    //     'is_faktur_ekspedisi'
+    // ];
 
     protected $casts = [
         'is_faktur_ekspedisi' => 'boolean',

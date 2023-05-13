@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7af429ae12ea999138589fdbdf9aac3",
+    "content-hash": "90c883ebe3d6c289cdf34d8db8e753ba",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -2190,6 +2190,76 @@
                 }
             ],
             "time": "2023-04-03T17:57:52+00:00"
+        },
+        {
+            "name": "konnco/filament-import",
+            "version": "1.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/konnco/filament-import.git",
+                "reference": "f57029e236ce9f84a5a1ec9472107d333be4f10f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/konnco/filament-import/zipball/f57029e236ce9f84a5a1ec9472107d333be4f10f",
+                "reference": "f57029e236ce9f84a5a1ec9472107d333be4f10f",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^2.0",
+                "filament/notifications": "^2.0",
+                "illuminate/contracts": "^9.0|^10.0",
+                "illuminate/support": "^9.0|^10.0",
+                "maatwebsite/excel": "^3.1",
+                "php": "^8.0",
+                "psr/simple-cache": "^2.0|^3.0",
+                "spatie/laravel-package-tools": "^1.14"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^6.0|^7.0",
+                "nunomaduro/larastan": "^2.0",
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Konnco\\FilamentImport\\FilamentImportServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Konnco\\FilamentImport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Franky So",
+                    "email": "frankyso.mail@gmail.com"
+                }
+            ],
+            "keywords": [
+                "filament-import",
+                "import",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/konnco/filament-import/issues",
+                "source": "https://github.com/konnco/filament-import/tree/1.5.2"
+            },
+            "time": "2023-05-03T04:48:06+00:00"
         },
         {
             "name": "korridor/laravel-has-many-sync",

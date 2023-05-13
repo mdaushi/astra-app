@@ -52,8 +52,8 @@ class UserResource extends Resource implements HasShieldPermissions
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime(),
+                // Tables\Columns\TextColumn::make('email_verified_at')
+                //     ->dateTime(),
                 Tables\Columns\BadgeColumn::make('roles.name'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),

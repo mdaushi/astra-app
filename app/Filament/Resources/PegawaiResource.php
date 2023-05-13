@@ -64,18 +64,18 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                     ->maxLength(255),
                 // Forms\Components\TextInput::make('user_id')
                 //     ->required(),
-                Forms\Components\FileUpload::make('picture')
-                    ->required()
-                    ->image()
-                    ->disk('public')
-                    ->directory('picture')
-                    ->preserveFilenames(),
-                Forms\Components\Select::make('approvals_id')
-                    ->label('Approvals')
-                    // ->required()
-                    ->relationship('approvalPaket', 'kode')
-                    ->preload()
-                    ->searchable(),
+                // Forms\Components\FileUpload::make('picture')
+                //     ->required()
+                //     ->image()
+                //     ->disk('public')
+                //     ->directory('picture')
+                //     ->preserveFilenames(),
+                // Forms\Components\Select::make('approvals_id')
+                //     ->label('Approvals')
+                //     // ->required()
+                //     ->relationship('approvalPaket', 'kode')
+                //     ->preload()
+                //     ->searchable(),
                 Forms\Components\Section::make('Akun')
                     ->description('Pembuatan akun diperluhkan untuk dapat mengakses aplikasi ini')
                     ->schema([
@@ -118,7 +118,7 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('jabatan.nama'),
                 Tables\Columns\TextColumn::make('kode_area'),
                 Tables\Columns\TextColumn::make('area'),
-                Tables\Columns\ImageColumn::make('picture'),
+                // Tables\Columns\ImageColumn::make('picture'),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime(),
                 // Tables\Columns\TextColumn::make('updated_at')
