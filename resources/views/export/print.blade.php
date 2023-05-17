@@ -63,7 +63,7 @@
                 <p>CABANG : POLMAS</p>
             </td>
             <td>
-                <img style="float:right;width:150px" src="{{ url('/img/Gambar1.png') }}" alt="">
+                <img style="float:right;width:150px" src="{{ public_path('/img/Gambar1.png') }}" alt="">
             </td>
         </tr>
     </table>
