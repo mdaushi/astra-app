@@ -77,4 +77,29 @@ class Pegawai extends Model
     {
         return $this->belongsTo(ApprovalPaket::class, 'approvals_id');
     }
+
+    public function approvalsatu(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approval1', 'email');
+    }
+
+    /**
+     * Get the approvaldua that owns the ApprovalPaket
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function approvaldua(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approval2', 'email');
+    }
+
+    /**
+     * Get the approvaltiga that owns the ApprovalPaket
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function approvaltiga(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approval3', 'email');
+    }
 }

@@ -153,14 +153,18 @@ class PengajuanPerjalananDinas extends Model
     private function queryHasApproval($query)
     {
         return $query->whereHas('pegawai', function(Builder $query){
-            $query->whereHas('approvalPaket', function(Builder $query){
-                $query->whereHas('approvalsatu', function(Builder $query){
+            $query->whereHas('approvalsatu', function(Builder $query){
+                $query->whereHas('pegawai', function(Builder $query){
                     $query->where('npk', auth()->user()->pegawai->npk);
                 });
-                $query->orWhereHas('approvaldua', function(Builder $query){
+            });
+            $query->orWhereHas('approvaldua', function(Builder $query){
+                $query->whereHas('pegawai', function(Builder $query){
                     $query->where('npk', auth()->user()->pegawai->npk);
                 });
-                $query->orWhereHas('approvaltiga', function(Builder $query){
+            });
+            $query->orWhereHas('approvaltiga', function(Builder $query){
+                $query->whereHas('pegawai', function(Builder $query){
                     $query->where('npk', auth()->user()->pegawai->npk);
                 });
             });
