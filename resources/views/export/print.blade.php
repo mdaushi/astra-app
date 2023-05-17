@@ -127,7 +127,7 @@
 
             {{-- item kegiatan --}}
 
-            @for ($i = 0; $i < 5; $i++)
+            @for ($i = 0; $i < count($datas->kegiatan); $i++)
                 <tr>
                     <td style="height: 15px">{{ $datas->kegiatan[$i]->tanggal ?? ' ' }}</td>
                     <td class="capitalize">{{ $datas->kegiatan[$i]->dari_kota ?? ' ' }}</td>
