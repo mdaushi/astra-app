@@ -16,7 +16,7 @@ class CreatePlanPengajuanPerjalananDinas extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['no_surat'] = $this->getMaxNoSurat();
+        // $data['no_surat'] = $this->getMaxNoSurat();
         $data['user_id'] = auth()->id();
 
         // $bank = $this->processRekening($data['bank']);

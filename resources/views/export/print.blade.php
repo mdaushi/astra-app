@@ -70,7 +70,7 @@
 
     {{-- nomor surat --}}
     <p class="uppercase bold text-center" style="margin-top: 20px; font-size: 15px">formulis perjalanan dinas</p>
-    <p class="uppercase bold text-center" style="font-size: 15px;margin-bottom: 10px">No. : PLMS/MKS/ /IV/23</p>
+    <p class="uppercase bold text-center" style="font-size: 15px;margin-bottom: 10px">{{ $format_surat }}</p>
     {{-- informasi head --}}
     <div style="overflow-x:auto;">
         <p>Yang melakukan perjalanan dinas</p>

@@ -138,7 +138,7 @@ class PengajuanPerjalananDinas extends Model
     private function canViewAllPengajuan($query)
     {
         $roleUser = auth()->user()->roles()->first()->name;
-
+        
         // jika approval, maka get data sesuai pegawainya
         if(in_array(strtolower($roleUser), config('approval.order'))){
             return $this->queryHasApproval($query)->exists();
@@ -270,6 +270,7 @@ class PengajuanPerjalananDinas extends Model
     {
         $this->sign_hrd_at = Carbon::now();
         $this->nama_hrd_signed = auth()->user()->pegawai->nama;
+        $this->no_surat = $this->maxNoSurat();
         $this->save();
     }
 
@@ -278,6 +279,11 @@ class PengajuanPerjalananDinas extends Model
         $this->sign_ga_at = Carbon::now();
         $this->nama_ga_signed = auth()->user()->pegawai->nama;
         $this->save();
+    }
+
+    public function maxNoSurat()
+    {
+        return $this->max('no_surat') + 1;
     }
      
 }
