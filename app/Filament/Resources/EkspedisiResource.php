@@ -15,6 +15,7 @@ use App\Filament\Resources\EkspedisiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EkspedisiResource\RelationManagers;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
+use Closure;
 
 class EkspedisiResource extends Resource
 {
@@ -89,9 +90,15 @@ class EkspedisiResource extends Resource
                     ->options([
                         // 'yes' => 'YES',
                         // 'ods' => 'ODS',
-                        'reguler' => 'REGULER'
+                        'reguler' => 'REGULER',
+                        'other' => 'Other'
                     ])
-                    ->searchable(),
+                    ->searchable()
+                    ->reactive(),
+                Forms\Components\TextInput::make('alasan_jenis_layanan_other')
+                    ->required()
+                    ->hidden(fn (Closure $get) => $get('jenis_layanan') !== 'other')
+                    ->maxLength(255),
             ]);
     }
 
@@ -211,6 +218,6 @@ class EkspedisiResource extends Resource
         if(auth()->user()->roles[0]->name == 'kurir'){
             return static::getModel()::query()->where('ekspedisi', strtolower(auth()->user()->name));
         }
-        return static::getModel()::query();
+        return static::getModel()::query()->where('pegawai_id', auth()->user()->pegawai->id);
     }
 }
