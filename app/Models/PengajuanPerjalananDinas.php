@@ -72,6 +72,10 @@ class PengajuanPerjalananDinas extends Model
             get: function() {
                 $order = config('approval.order');
                 $columns = config('approval.roleWithColumnFilter');
+
+                if($this->rejected_at){
+                    return 'Ditolak';
+                }
                  
                 if(!$this->sign_user_at){
                     return config('helper.status_pengajuan.draft');
@@ -240,6 +244,10 @@ class PengajuanPerjalananDinas extends Model
         $roleUser = auth()->user()->roles()->first()->name;
         $column = 'sign_' . strtolower($roleUser) . '_at';
 
+        if($this->rejected_at) {
+            return true;
+        }
+
         return $this->{$column} ? true : false;
     }
 
@@ -284,6 +292,15 @@ class PengajuanPerjalananDinas extends Model
     public function maxNoSurat()
     {
         return $this->max('no_surat') + 1;
+    }
+
+    public function disableRejected()
+    {
+        if($this->rejected_at !== null){
+            return true;
+        }
+
+        return false;
     }
      
 }

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Filament\Pages\Actions;
 use App\Events\ApprovalProcessed;
 use App\Events\PDBarengProcessed;
+use App\Events\RejectedProcessed;
 use Illuminate\Support\Facades\DB;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
@@ -34,6 +35,14 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
                 ->modalSubheading('Sebelum approve, pasikan anda telah membaca seluruh isi pengajuan ini')
                 ->hidden(fn(): bool => !$this->record->roleCanApproved())
                 ->disabled(fn(): bool => $this->record->disableByRole()),
+
+            Actions\Action::make('reject')
+                ->color('danger')
+                ->requiresConfirmation()
+                ->action('reject')
+                ->hidden(fn(): bool => !$this->record->roleCanApproved())
+                ->disabled(fn(): bool => $this->record->disableRejected())
+                ->modalSubheading('Tolak Pengajuan ini?'),
 
             Actions\Action::make('print')
                 ->url(function(){
@@ -81,6 +90,30 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
                 ->success()
                 ->send();
 
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Notification::make()
+                ->title('Error, ada kendala')
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function reject(): void
+    {
+        DB::beginTransaction();
+        try {
+            $this->record->rejected_at = Carbon::now();
+            $this->record->save();
+
+            RejectedProcessed::dispatch($this->record);
+
+            DB::commit();
+
+            Notification::make()
+                ->title('Pengajuan ditolak')
+                ->success()
+                ->send();
         } catch (\Throwable $th) {
             DB::rollBack();
             Notification::make()

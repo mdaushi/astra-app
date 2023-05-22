@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Events\ApprovalProcessed;
 use App\Notifications\ApprovalMail;
 use App\Notifications\PengajuanAgreed;
+use App\Notifications\PengajuanApproved;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
@@ -42,8 +43,14 @@ class SendApprovalNotification
             !$event->pengajuanPerjalananDinas->{$columns[$order[2]]}
             ){
                 $approval = $event->pengajuanPerjalananDinas->pegawai->approval1; 
+
+                // send to approval
                 $user = User::where('email', $approval)->first();
                 Notification::send($user, new ApprovalMail($event->pengajuanPerjalananDinas, $user->name));
+
+                // send to user
+                $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
+                Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
         }
 
         // send mail for approval 2
@@ -54,6 +61,10 @@ class SendApprovalNotification
                 $approval = $event->pengajuanPerjalananDinas->pegawai->approval2; 
                 $user = User::where('email', $approval)->first();
                 Notification::send($user, new ApprovalMail($event->pengajuanPerjalananDinas, $user->name));
+
+                // send to user
+                $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
+                Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
         }
 
         // send mail for approval 3
@@ -64,6 +75,10 @@ class SendApprovalNotification
                 $approval = $event->pengajuanPerjalananDinas->pegawai->approval3; 
                 $user = User::where('email', $approval)->first();
                 Notification::send($user, new ApprovalMail($event->pengajuanPerjalananDinas, $user->name));
+
+                // send to user
+                $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
+                Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
         }
 
         // send mail for user if pengajuan agreed

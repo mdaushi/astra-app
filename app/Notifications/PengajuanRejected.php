@@ -2,24 +2,25 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ApprovalMail extends Notification
+class PengajuanRejected extends Notification
 {
     use Queueable;
 
+    public $namaPengaju;
     public $pengajuan;
-    public $userApproval;
     /**
      * Create a new notification instance.
      */
-    public function __construct($pengajuan, $userApproval)
+    public function __construct($pengajuan, $namaPengaju)
     {
         $this->pengajuan = $pengajuan;
-        $this->userApproval = $userApproval;
+        $this->namaPengaju = $namaPengaju;
     }
 
     /**
@@ -37,14 +38,10 @@ class ApprovalMail extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $pegawai = $this->pengajuan->nama;
-        $url = route('filament.resources.pengajuan-perjalanan-dinas.view', $this->pengajuan->id);
         return (new MailMessage)
-                    ->subject('Approval Pengajuan Perjalanan Dinas')
-                    ->greeting('Hello, ' . $this->userApproval)
-                    ->line('Pegawai ' . $pegawai . ' telah mengajukan perjalanan dinas.')
-                    ->line('klik tombol dibawah ini untuk approve pengajuan')
-                    ->action('Lihat Pengajuan', $url)
+                    ->subject('Pengajuan Perjalanan Dinas ditolak')
+                    ->greeting('Hello, ' . $this->namaPengaju)
+                    ->line('Maaf, Pengajuan anda pada tanggal ' . Carbon::parse($this->pengajuan->created_at)->format('d M Y') . ' Telah ditolak.')
                     ->line('Terimakasih!');
     }
 

@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Events\ApprovalProcessed;
 use App\Events\EkspedisiProcessed;
 use App\Events\PDBarengProcessed;
+use App\Events\RejectedProcessed;
 use App\Listeners\SendApprovalNotification;
 use App\Listeners\SendNotificationLayananOther;
+use App\Listeners\SendNotificationRejected;
 use App\Listeners\SendPDBarengNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -35,6 +37,10 @@ class EventServiceProvider extends ServiceProvider
 
         EkspedisiProcessed::class => [
             SendNotificationLayananOther::class
+        ],
+        
+        RejectedProcessed::class => [
+            SendNotificationRejected::class
         ]
     ];
 
