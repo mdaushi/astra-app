@@ -26,13 +26,13 @@ class ExportController extends Controller
         $singuser = base64_encode(QrCode::generate('dokument ini terverifikasi secara resmi di astra app. dibuat oleh ' . $pengajuan->pegawai->nama . ' pada tanggal ' . Carbon::parse($pengajuan->created_at)->format('d M Y')));
 
         if($pengajuan->sign_chief_at){
-            $sign1 = base64_encode(QrCode::generate($this->scanQRCodeResult($pengajuan->nama_chief_signed, $pengajuan->sign_chief_at)));
+            $sign2 = base64_encode(QrCode::generate($this->scanQRCodeResult($pengajuan->nama_chief_signed, $pengajuan->sign_chief_at)));
         }
         if($pengajuan->sign_hrd_at){
-            $sign2 = base64_encode(QrCode::generate($this->scanQRCodeResult($pengajuan->nama_hrd_signed, $pengajuan->sign_hrd_at)));
+            $sign3 = base64_encode(QrCode::generate($this->scanQRCodeResult($pengajuan->nama_hrd_signed, $pengajuan->sign_hrd_at)));
         }
         if($pengajuan->sign_ga_at){
-            $sign3 = base64_encode(QrCode::generate($this->scanQRCodeResult($pengajuan->nama_ga_signed, $pengajuan->sign_ga_at)));
+            $sign1 = base64_encode(QrCode::generate($this->scanQRCodeResult($pengajuan->nama_ga_signed, $pengajuan->sign_ga_at)));
         }
 
         $format_surat = 'No. : PLMS/MKS/'. $pengajuan->no_surat .'/'. $this->convertToRoman(Carbon::now()->format('m')) .'/' . Carbon::now()->format('y');
