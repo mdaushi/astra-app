@@ -123,7 +123,7 @@ class PengajuanPerjalananDinasResource extends Resource
                 // Tables\Columns\TextColumn::make('golongan'),
                 Tables\Columns\TextColumn::make('penginapan'),
                 Tables\Columns\TextColumn::make('payment'),
-                Tables\Columns\TextColumn::make('sign_user_at')
+                Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime()
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {

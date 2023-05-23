@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
 use Carbon\Carbon;
 use Filament\Pages\Actions;
 use App\Events\ApprovalProcessed;
+use App\Events\ApprovedProcessed;
 use App\Events\PDBarengProcessed;
 use App\Events\RejectedProcessed;
 use Illuminate\Support\Facades\DB;
@@ -81,6 +82,9 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
             // send mail approval
             ApprovalProcessed::dispatch($this->record);
 
+            // send notif to user
+            ApprovedProcessed::dispatch($this->record);
+            
             // send notif pd bersama
             PDBarengProcessed::dispatch($this->record);
             

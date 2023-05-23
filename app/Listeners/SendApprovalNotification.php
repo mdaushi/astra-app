@@ -49,8 +49,8 @@ class SendApprovalNotification
                 Notification::send($user, new ApprovalMail($event->pengajuanPerjalananDinas, $user->name));
 
                 // send to user
-                $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
-                Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
+                // $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
+                // Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
         }
 
         // send mail for approval 2
@@ -63,8 +63,8 @@ class SendApprovalNotification
                 Notification::send($user, new ApprovalMail($event->pengajuanPerjalananDinas, $user->name));
 
                 // send to user
-                $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
-                Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
+                // $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
+                // Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
         }
 
         // send mail for approval 3
@@ -77,8 +77,8 @@ class SendApprovalNotification
                 Notification::send($user, new ApprovalMail($event->pengajuanPerjalananDinas, $user->name));
 
                 // send to user
-                $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
-                Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
+                // $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
+                // Notification::send($userPengaju, new PengajuanApproved($event->pengajuanPerjalananDinas, $user->name));
         }
 
         // send mail for user if pengajuan agreed
@@ -87,8 +87,8 @@ class SendApprovalNotification
             $event->pengajuanPerjalananDinas->{$columns[$order[2]]}
             ){
                 $pegawai = $event->pengajuanPerjalananDinas->pegawai;
-                $user = User::find($pegawai->user->id);
-                Notification::send($user, new PengajuanAgreed($event->pengajuanPerjalananDinas));
+                // $user = User::find($pegawai->user->id);
+                // Notification::send($user, new PengajuanAgreed($event->pengajuanPerjalananDinas));
         }
 
         

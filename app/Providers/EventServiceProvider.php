@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Events\ApprovalProcessed;
+use App\Events\ApprovedProcessed;
 use App\Events\EkspedisiProcessed;
 use App\Events\PDBarengProcessed;
 use App\Events\RejectedProcessed;
 use App\Listeners\SendApprovalNotification;
+use App\Listeners\SendNotificationApprovedToUser;
 use App\Listeners\SendNotificationLayananOther;
 use App\Listeners\SendNotificationRejected;
 use App\Listeners\SendPDBarengNotification;
@@ -41,6 +43,10 @@ class EventServiceProvider extends ServiceProvider
         
         RejectedProcessed::class => [
             SendNotificationRejected::class
+        ],
+
+        ApprovedProcessed::class => [
+            SendNotificationApprovedToUser::class
         ]
     ];
 
