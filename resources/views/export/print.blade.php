@@ -155,18 +155,18 @@
                 </td>
                 <td class="text-center" colspan="2">
                     <p>Chief/Dept Head/ <br> Region Head</p>
-                    <img src="data:image/png;base64, {{ $sign1 }}" alt="">
-                    <p class="uppercase">({{ $approval1->name ?? '-' }})</p>
+                    <img src="data:image/png;base64, {{ $sign2 }}" alt="">
+                    <p class="uppercase">({{ $approval2->name ?? '-' }})</p>
                 </td>
                 <td class="text-center" colspan="2">
                     <p>ADH</p>
-                    <img src="data:image/png;base64, {{ $sign2 }}" alt="">
-                    <p class="uppercase">({{ $approval2->name ?? '' }})</p>
+                    <img src="data:image/png;base64, {{ $sign3 }}" alt="">
+                    <p class="uppercase">({{ $approval3->name ?? '' }})</p>
                 </td>
                 <td class="text-center" colspan="2">
                     <p>General Affair</p>
-                    <img src="data:image/png;base64, {{ $sign3 }}" alt="">
-                    <p class="uppercase">({{ $approval3->name ?? '' }})</p>
+                    <img src="data:image/png;base64, {{ $sign1 }}" alt="">
+                    <p class="uppercase">({{ $approval1->name ?? '' }})</p>
                 </td>
             </tr>
         </table>
