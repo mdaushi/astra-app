@@ -22,6 +22,13 @@ class CreateEkspedisi extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['pegawai_id'] = auth()->user()->pegawai->id;
+        if(isset($data['tempat_tujuan_nonfaktur'])){
+            $data['tempat_tujuan'] = $data['tempat_tujuan_nonfaktur'];
+            unset($data['tempat_tujuan_nonfaktur']);
+        }else{
+            $data['tempat_tujuan'] = $data['tempat_tujuan_faktur'];
+            unset($data['tempat_tujuan_faktur']);
+        }
     
         return $data;
     }
