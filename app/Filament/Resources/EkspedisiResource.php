@@ -15,6 +15,7 @@ use App\Filament\Resources\EkspedisiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EkspedisiResource\RelationManagers;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
+use App\Models\Wilayah;
 use Closure;
 
 class EkspedisiResource extends Resource
@@ -54,11 +55,11 @@ class EkspedisiResource extends Resource
                     ->searchable(),
                 Forms\Components\Select::make('wilayah')
                     ->required()
-                    ->options(config('wilayah.wilayah'))
+                    ->options(Wilayah::all()->pluck('wilayah', 'wilayah'))
                     ->searchable()
                     ->reactive()
                     ->afterStateUpdated(function($state, callable $set) {
-                        $set('ekspedisi', config('wilayah.ekspedisi')[$state] ?? '');
+                        $set('ekspedisi', Wilayah::where('wilayah', $state)->first()->ekspedisi ?? '');
                     }),
                 Forms\Components\TextInput::make('ekspedisi')
                     ->required()
