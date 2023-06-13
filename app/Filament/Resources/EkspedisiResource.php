@@ -286,6 +286,11 @@ class EkspedisiResource extends Resource
         if(auth()->user()->roles[0]->name == 'kurir'){
             return static::getModel()::query()->where('ekspedisi', strtolower(auth()->user()->name));
         }
-        return static::getModel()::query()->where('pegawai_id', auth()->user()->pegawai->id);
+
+        if(auth()->user()->roles[0]->name != 'admin'){
+            return static::getModel()::query()->where('pegawai_id', auth()->user()->pegawai->id);
+        }
+
+        return static::getModel()::query();
     }
 }
