@@ -2,22 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Kantor;
+use App\Models\Wilayah;
 use App\Models\Ekspedisi;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use App\Models\FakturEkspedisi;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Layout;
 use Filament\Notifications\Notification;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EkspedisiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EkspedisiResource\RelationManagers;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
-use App\Models\Kantor;
-use App\Models\Wilayah;
-use Closure;
 
 class EkspedisiResource extends Resource
 {
@@ -123,8 +125,24 @@ class EkspedisiResource extends Resource
                 Forms\Components\TextInput::make('nama_penerima')
                     ->required()
                     ->autocomplete('off')
-                    ->label('Jumlah Dokumen')
-                    ->numeric(),
+                    ->hidden(function(callable $get) {
+                        if($get('kategori') == 'faktur'){
+                            return true;
+                        }
+                        return false;
+                    })
+                    ->label('Nama Penerima'),
+                Forms\Components\TextInput::make('jumlah_dokumen')
+                    ->required()
+                    ->autocomplete('off')
+                    ->hidden(function(callable $get) {
+                        if($get('kategori') == 'nonfaktur'){
+                            return true;
+                        }
+                        return false;
+                    })
+                    ->numeric()
+                    ->label('Jumlah Dokumen'),
                 Forms\Components\TextInput::make('kontak')
                     ->label('Kontak yang bisa dihubungi')
                     ->hidden(function(callable $get) {
@@ -182,6 +200,8 @@ class EkspedisiResource extends Resource
                     ->label('Kantor/Tempat Tujuan'),
                 Tables\Columns\TextColumn::make('alamat_tujuan'),
                 Tables\Columns\TextColumn::make('nama_penerima')
+                    ->label('Nama Penerima'),
+                Tables\Columns\TextColumn::make('jumlah_dokumen')
                     ->label('Jumlah Dokumen'),
                 Tables\Columns\TextColumn::make('kontak')
                     ->label('Kontak yang bisa dihubungi'),
