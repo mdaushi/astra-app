@@ -48,16 +48,15 @@ class EkspedisiResource extends Resource
                     ->default('nonfaktur')
                     ->helperText('untuk kategori faktur, pastika anda telah mengisi data faktur pada menu Profile')
                     ->reactive()
-                    ->afterStateUpdated(function($state, callable $set){
-                        if($state == 'faktur') {
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state == 'faktur') {
                             // $faktur = FakturEkspedisi::where('pegawai_id', auth()->user()->pegawai->id)
                             //     ->first();
                             // $set('tempat_tujuan', $faktur->tempat_tujuan ?? '');
                             // $set('alamat_tujuan', $faktur->alamat_tujuan ?? '');
                             return $set('jenis_paket', 'Faktor');
-                        } 
+                        }
                         return $set('jenis_paket', null);
-                        
                     })
                     ->searchable(),
                 Forms\Components\Select::make('wilayah')
@@ -65,14 +64,14 @@ class EkspedisiResource extends Resource
                     ->options(Wilayah::all()->pluck('wilayah', 'wilayah'))
                     ->searchable()
                     ->reactive()
-                    ->hidden(function(callable $get){
-                        if($get('kategori') == 'faktur'){
+                    ->hidden(function (callable $get) {
+                        if ($get('kategori') == 'faktur') {
                             return true;
                         }
 
                         return false;
                     })
-                    ->afterStateUpdated(function($state, callable $set) {
+                    ->afterStateUpdated(function ($state, callable $set) {
                         $set('ekspedisi', Wilayah::where('wilayah', $state)->first()->ekspedisi ?? '');
                     }),
                 Forms\Components\TextInput::make('ekspedisi')
@@ -86,8 +85,8 @@ class EkspedisiResource extends Resource
                 Forms\Components\TextInput::make('tempat_tujuan_nonfaktur')
                     ->label('Kantor/Tempat Tujuan')
                     ->required()
-                    ->hidden(function(callable $get){
-                        if($get('kategori') == 'faktur'){
+                    ->hidden(function (callable $get) {
+                        if ($get('kategori') == 'faktur') {
                             return true;
                         }
                         return false;
@@ -97,15 +96,15 @@ class EkspedisiResource extends Resource
                 Forms\Components\Select::make('tempat_tujuan_faktur')
                     ->options(Kantor::all()->pluck('kantor', 'kantor'))
                     ->label('Kantor/Tempat Tujuan')
-                    ->hidden(function(callable $get){
-                        if($get('kategori') != 'faktur'){
+                    ->hidden(function (callable $get) {
+                        if ($get('kategori') != 'faktur') {
                             return true;
                         }
                         return false;
                     })
                     ->reactive()
                     ->searchable()
-                    ->afterStateUpdated(function($state, callable $set){
+                    ->afterStateUpdated(function ($state, callable $set) {
                         $kantor = Kantor::where('kantor', $state)->first();
                         $set('ekspedisi', $kantor['ekspedisi'] ?? '');
                         $set('alamat_tujuan', $kantor['alamat'] ?? '');
@@ -115,8 +114,8 @@ class EkspedisiResource extends Resource
                 // alamat tujuan
                 Forms\Components\TextInput::make('alamat_tujuan')
                     ->required()
-                    ->disabled(function(callable $get){
-                        if($get('kategori') == 'faktur'){
+                    ->disabled(function (callable $get) {
+                        if ($get('kategori') == 'faktur') {
                             return true;
                         }
                         return false;
@@ -125,8 +124,8 @@ class EkspedisiResource extends Resource
                 Forms\Components\TextInput::make('nama_penerima')
                     ->required()
                     ->autocomplete('off')
-                    ->hidden(function(callable $get) {
-                        if($get('kategori') == 'faktur'){
+                    ->hidden(function (callable $get) {
+                        if ($get('kategori') == 'faktur') {
                             return true;
                         }
                         return false;
@@ -135,8 +134,8 @@ class EkspedisiResource extends Resource
                 Forms\Components\TextInput::make('jumlah_dokumen')
                     ->required()
                     ->autocomplete('off')
-                    ->hidden(function(callable $get) {
-                        if($get('kategori') == 'nonfaktur'){
+                    ->hidden(function (callable $get) {
+                        if ($get('kategori') == 'nonfaktur') {
                             return true;
                         }
                         return false;
@@ -145,8 +144,8 @@ class EkspedisiResource extends Resource
                     ->label('Jumlah Dokumen'),
                 Forms\Components\TextInput::make('kontak')
                     ->label('Kontak yang bisa dihubungi')
-                    ->hidden(function(callable $get) {
-                        if($get('kategori') == 'faktur'){
+                    ->hidden(function (callable $get) {
+                        if ($get('kategori') == 'faktur') {
                             return true;
                         }
                         return false;
@@ -157,8 +156,8 @@ class EkspedisiResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('jenis_paket')
                     ->required()
-                    ->disabled(function(callable $get){
-                        if($get('kategori') == 'faktur'){
+                    ->disabled(function (callable $get) {
+                        if ($get('kategori') == 'faktur') {
                             return true;
                         }
 
@@ -174,8 +173,8 @@ class EkspedisiResource extends Resource
                         'other' => 'Other'
                     ])
                     ->searchable()
-                    ->hidden(function(callable $get) {
-                        if($get('kategori') == 'faktur'){
+                    ->hidden(function (callable $get) {
+                        if ($get('kategori') == 'faktur') {
                             return true;
                         }
                         return false;
@@ -196,27 +195,29 @@ class EkspedisiResource extends Resource
                 // Tables\Columns\TextColumn::make('ekspedisi'),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->label('TANGGAL')
+                    ->sortable()
                     ->date(),
                 Tables\Columns\TextColumn::make('tempat_tujuan')
                     ->label('KANTOR')->action(Tables\Actions\ViewAction::make()),
-                    Tables\Columns\TextColumn::make('nama_penerima')
-                        ->label('PENERIMA'),
-                    Tables\Columns\TextColumn::make('nama_pengirim')
-                        ->label('PENGIRIM'),
-                    Tables\Columns\TextColumn::make('kontak')
-                        ->label('KONTAK'),
-                Tables\Columns\TextColumn::make('alamat_tujuan')
-                    ->label('ALAMAT'),
-                Tables\Columns\TextColumn::make('jumlah_dokumen')
-                    ->label('JUMLAH'),
+                Tables\Columns\TextColumn::make('nama_penerima')
+                    ->label('PENERIMA'),
+                Tables\Columns\TextColumn::make('nama_pengirim')
+                    ->label('PENGIRIM'),
+                Tables\Columns\TextColumn::make('kontak')
+                    ->label('KONTAK'),
                 Tables\Columns\TextColumn::make('jenis_paket')
                     ->label('PAKET'),
-                Tables\Columns\TextColumn::make('jenis_layanan')
-                    ->label('LAYANAN'),
+                Tables\Columns\TextColumn::make('jumlah_dokumen')
+                    ->label('JUMLAH'),
                 Tables\Columns\TextColumn::make('no_resi')
                     ->label('RESI'),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('STATUS')
+                    ->label('STATUS'),
+                Tables\Columns\TextColumn::make('jenis_layanan')
+                    ->label('LAYANAN'),
+                Tables\Columns\TextColumn::make('alamat_tujuan')
+                    ->label('ALAMAT'),
+
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime(),
                 // Tables\Columns\TextColumn::make('updated_at')
@@ -236,11 +237,11 @@ class EkspedisiResource extends Resource
                         $record->update([
                             'no_resi' => $data['no_resi']
                         ]);
-                        
-                        Notification::make() 
+
+                        Notification::make()
                             ->title('Saved successfully')
                             ->success()
-                            ->send(); 
+                            ->send();
                     })
                     ->form([
                         Forms\Components\TextInput::make('no_resi')
@@ -264,10 +265,10 @@ class EkspedisiResource extends Resource
                             'status' => $data['status']
                         ]);
 
-                        Notification::make() 
+                        Notification::make()
                             ->title('Saved successfully')
                             ->success()
-                            ->send(); 
+                            ->send();
                     })
                     ->visible(fn (Ekspedisi $record): bool => auth()->user()->can('resi_ekspedisi', $record)),
 
@@ -278,14 +279,14 @@ class EkspedisiResource extends Resource
                 FilamentExportHeaderAction::make('export')
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -293,8 +294,8 @@ class EkspedisiResource extends Resource
             'create' => Pages\CreateEkspedisi::route('/create'),
             'edit' => Pages\EditEkspedisi::route('/{record}/edit'),
         ];
-    }  
-    
+    }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -310,11 +311,11 @@ class EkspedisiResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if(auth()->user()->roles[0]->name == 'kurir'){
+        if (auth()->user()->roles[0]->name == 'kurir') {
             return static::getModel()::query()->where('ekspedisi', strtolower(auth()->user()->name));
         }
 
-        if(auth()->user()->roles[0]->name != 'admin'){
+        if (auth()->user()->roles[0]->name != 'admin') {
             return static::getModel()::query()->where('pegawai_id', auth()->user()->pegawai->id);
         }
 
