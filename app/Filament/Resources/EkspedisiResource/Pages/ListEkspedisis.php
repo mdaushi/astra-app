@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\EkspedisiResource\Pages;
 
-use App\Filament\Resources\EkspedisiResource;
 use Filament\Pages\Actions;
+use Filament\Tables\Actions\Position;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\EkspedisiResource;
 
 class ListEkspedisis extends ListRecords
 {
@@ -15,5 +16,10 @@ class ListEkspedisis extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getTableActionsPosition(): ?string
+    {
+        return Position::BeforeCells;
     }
 }

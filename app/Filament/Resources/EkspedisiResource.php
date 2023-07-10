@@ -195,21 +195,28 @@ class EkspedisiResource extends Resource
                 // Tables\Columns\TextColumn::make('kategori'),
                 // Tables\Columns\TextColumn::make('ekspedisi'),
                 Tables\Columns\TextColumn::make('tanggal')
+                    ->label('TANGGAL')
                     ->date(),
                 Tables\Columns\TextColumn::make('tempat_tujuan')
-                    ->label('Kantor/Tempat Tujuan'),
-                Tables\Columns\TextColumn::make('alamat_tujuan'),
-                Tables\Columns\TextColumn::make('nama_penerima')
-                    ->label('Nama Penerima'),
+                    ->label('KANTOR')->action(Tables\Actions\ViewAction::make()),
+                    Tables\Columns\TextColumn::make('nama_penerima')
+                        ->label('PENERIMA'),
+                    Tables\Columns\TextColumn::make('nama_pengirim')
+                        ->label('PENGIRIM'),
+                    Tables\Columns\TextColumn::make('kontak')
+                        ->label('KONTAK'),
+                Tables\Columns\TextColumn::make('alamat_tujuan')
+                    ->label('ALAMAT'),
                 Tables\Columns\TextColumn::make('jumlah_dokumen')
-                    ->label('Jumlah Dokumen'),
-                Tables\Columns\TextColumn::make('kontak')
-                    ->label('Kontak yang bisa dihubungi'),
-                Tables\Columns\TextColumn::make('nama_pengirim'),
-                Tables\Columns\TextColumn::make('jenis_paket'),
-                Tables\Columns\TextColumn::make('jenis_layanan'),
-                Tables\Columns\TextColumn::make('no_resi'),
+                    ->label('JUMLAH'),
+                Tables\Columns\TextColumn::make('jenis_paket')
+                    ->label('PAKET'),
+                Tables\Columns\TextColumn::make('jenis_layanan')
+                    ->label('LAYANAN'),
+                Tables\Columns\TextColumn::make('no_resi')
+                    ->label('RESI'),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('STATUS')
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime(),
                 // Tables\Columns\TextColumn::make('updated_at')
@@ -220,9 +227,9 @@ class EkspedisiResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('resi')
-                    ->label('Upload Resi')
+                    ->label('Up Resi')
                     ->icon('heroicon-s-pencil')
                     ->requiresConfirmation()
                     ->action(function (Ekspedisi $record, array $data): void {
@@ -242,7 +249,7 @@ class EkspedisiResource extends Resource
                     ])
                     ->visible(fn (Ekspedisi $record): bool => auth()->user()->can('resi_ekspedisi', $record)),
                 Tables\Actions\Action::make('status')
-                    ->label('Update Status')
+                    ->label('Upd Status')
                     ->requiresConfirmation()
                     ->form([
                         Forms\Components\Select::make('status')
