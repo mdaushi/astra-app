@@ -6,6 +6,7 @@ use App\Models\Golongan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Pegawai extends Model
 {
@@ -29,6 +30,7 @@ class Pegawai extends Model
 
     protected $casts = [
         'is_faktur_ekspedisi' => 'boolean',
+        'jabatan' => 'array'
     ];
 
     protected $appends = ['email'];
@@ -48,10 +50,10 @@ class Pegawai extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function jabatan(): BelongsTo
-    {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
-    }
+    // public function jabatan(): BelongsTo
+    // {
+    //     return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
+    // }
 
     /**
      * Get the golongan that owns the Pegawai
@@ -101,5 +103,15 @@ class Pegawai extends Model
     public function approvaltiga(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approval3', 'email');
+    }
+
+    /**
+     * The jabatan that belong to the Pegawai
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function jabatan(): BelongsToMany
+    {
+        return $this->belongsToMany(Jabatan::class, 'jabatan_pegawai', 'pegawai_id', 'jabatan_id');
     }
 }
