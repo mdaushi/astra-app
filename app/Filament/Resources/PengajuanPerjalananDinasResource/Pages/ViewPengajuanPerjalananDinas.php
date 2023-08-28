@@ -86,7 +86,7 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
             ApprovedProcessed::dispatch($this->record);
             
             // send notif pd bersama
-            PDBarengProcessed::dispatch($this->record);
+            // PDBarengProcessed::dispatch($this->record);
             
             DB::commit();
             Notification::make()

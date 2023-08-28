@@ -16,7 +16,11 @@ use App\Filament\Resources\PegawaiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PegawaiResource\RelationManagers;
 use App\Filament\Resources\PegawaiResource\Pages\EditPegawai;
+use App\Models\Jabatan;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Filament\Forms\Components\BelongsToManyMultiSelect;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Factories\BelongsToRelationship;
 
 class PegawaiResource extends Resource implements HasShieldPermissions
 {
@@ -39,6 +43,11 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                     ->disableAutocomplete()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('whatsapp')
+                    ->disableAutoComplete()
+                    ->required()
+                    ->placeholder('62xxxx')
+                    ->numeric(),
                 Forms\Components\TextInput::make('npk')
                     ->label('NPK')
                     ->numeric()
@@ -49,12 +58,12 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                     ->relationship('golongan', 'nama')
                     ->preload()
                     ->searchable(),
-                Forms\Components\Select::make('jabatan_id')
+                Forms\Components\Select::make('jabatan')
                     ->label('Jabatan')
                     ->required()
+                    ->multiple()
                     ->relationship('jabatan', 'nama')
-                    ->preload()
-                    ->searchable(),
+                    ->preload(),
                 Forms\Components\TextInput::make('kode_area')
                     ->label('Kode Area')
                     ->required()
@@ -104,7 +113,7 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                             ->label('Faktur'),
                     ])
                     ->columns(2)
-                    
+
             ]);
     }
 
@@ -134,14 +143,14 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -150,7 +159,7 @@ class PegawaiResource extends Resource implements HasShieldPermissions
             'edit' => Pages\EditPegawai::route('/{record}/edit'),
         ];
     }
-    
+
     public static function getPermissionPrefixes(): array
     {
         return [

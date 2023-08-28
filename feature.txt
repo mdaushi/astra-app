@@ -1,0 +1,14 @@
+pengajuan rejected
+setiap approval ada notif ke user
+
+ready to testing
+notif wa rejected pengajuan
+notf wa layanan other
+notif wa pd bersama (onproccess)
+
+
+todo
+notif pengajuan agreed
+multi jabatan
+update nomor whatsapp import pegawai dan add/edit pegawai
+ttd multi jabatan

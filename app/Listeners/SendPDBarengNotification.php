@@ -3,7 +3,9 @@
 namespace App\Listeners;
 
 use App\Models\User;
+use App\Models\watifier;
 use App\Events\PDBarengProcessed;
+use App\Services\WatifierService;
 use App\Models\KegiatanPerjalananDinas;
 use App\Models\PengajuanPerjalananDinas;
 use Illuminate\Queue\InteractsWithQueue;
@@ -66,7 +68,23 @@ class SendPDBarengNotification
                 $user = User::find($pegawai->user->id);
                 
                 Notification::send($user, new PDBarengNotification($pegawai->user->name, $nameSendingString));
+
+                $this->sendToWhatsapp(
+                    pegawai: [
+                        'nomor' => $user->pegawai->whatsapp,
+                        'nama' => $user->name
+                    ],
+                    pegawai_pd_bersama: $nameSendingString
+                    );
             }
         }
+    }
+
+    private function sendToWhatsapp(array $pegawai, string $pegawai_pd_bersama)
+    { 
+        return watifier::sendMessage([
+            'id' => $pegawai['nomor'], 
+            'message' => WatifierService::PdBersamaMessage(pegawai: $pegawai['nama'], pegawai_pd_bersama: $pegawai_pd_bersama)
+        ]);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\PegawaiResource;
 use Filament\Support\Actions\Concerns\CanCustomizeProcess;
+use Filament\Forms;
 
 
 class EditPegawai extends EditRecord
@@ -44,7 +45,16 @@ class EditPegawai extends EditRecord
         try {
             $this->updateUserBeforeUpdatePegawai($data, $record['user_id']);
             // $data['user_id'] = $userCreated->id;
-            $record->update($data);
+
+            $record->update([
+                'nama' => $data['nama'],
+                'whatsapp' => $data['whatsapp'],
+                'npk' => $data['npk'],
+                'golongan_id' => $data['golongan_id'],
+                'kode_area' => $data['kode_area'],
+                'area' => $data['area'],
+                'is_faktur_ekspedisi' => $data['is_faktur_ekspedisi']
+            ]);
 
             DB::commit();
             return $record;

@@ -100,12 +100,10 @@ class ListPegawais extends ListRecords
                         'password' => Hash::make('1234567890')
                     ])->assignRole($data['role']);
 
-                    // return $this->handlePegawaiCreation($data, $golongan, $jabatan);
-                    return Pegawai::create([
+                    $pegawai = Pegawai::create([
                         'nama' => $data['nama'],
                         'npk' => $data['npk'],
                         'golongan_id' => $golongan->id,
-                        'jabatan_id' => $jabatan->id,
                         'kode_area' => $data['kode_area'],
                         'area' => $data['area'],
                         'user_id' => $user->id,
@@ -114,6 +112,8 @@ class ListPegawais extends ListRecords
                         'approval2' => $data['approval2'],
                         'approval3' => $data['approval3']
                     ]);
+
+                    $pegawai->jabatan()->sync($jabatan);
                 })
         ];
     }
@@ -135,17 +135,28 @@ class ListPegawais extends ListRecords
 
     private function handleJabatanCreation($data)
     {
-        $query = Jabatan::query();
-        $jabatan = $query->where('nama', $data['nama_jabatan'])->first();
+        $data = $data['nama_jabatan'];
 
-        if(!$jabatan)
-        {
-            $jabatan = $query->create([
-                'nama' => $data['nama_jabatan']
-            ]);
+        $dataArray = explode(",", $data);
+
+        $jabatanIdArray = collect();
+
+        $query = Jabatan::query();
+
+        foreach ($dataArray as $item) {
+            $jabatan = $query->where('nama', $item)->first();
+    
+            if(!$jabatan)
+            {
+                $jabatan = $query->create([
+                    'nama' => $item
+                ]);
+            }
+
+            $jabatanIdArray->push($jabatan->id);
         }
 
-        return $jabatan;
+        return $jabatanIdArray;
     }
 
     private function handlePegawaiCreation($data, $golongan, $jabatan)

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Permission\Models\Role;
 
 class Pegawai extends Model
 {
@@ -30,7 +31,7 @@ class Pegawai extends Model
 
     protected $casts = [
         'is_faktur_ekspedisi' => 'boolean',
-        'jabatan' => 'array'
+        'jabatan' => 'array',
     ];
 
     protected $appends = ['email'];
@@ -52,7 +53,7 @@ class Pegawai extends Model
      */
     // public function jabatan(): BelongsTo
     // {
-    //     return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
+    //     return $this->belongsTo(Jabatan::class);
     // }
 
     /**
@@ -112,6 +113,6 @@ class Pegawai extends Model
      */
     public function jabatan(): BelongsToMany
     {
-        return $this->belongsToMany(Jabatan::class, 'jabatan_pegawai', 'pegawai_id', 'jabatan_id');
+        return $this->belongsToMany(Jabatan::class);
     }
 }
