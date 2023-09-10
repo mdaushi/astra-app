@@ -41,7 +41,8 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->maxLength(255)
                     ->hidden(fn (Page $livewire) => $livewire instanceof EditUser),
                 Forms\Components\Select::make('role')
-                    ->options(Role::all()->pluck('name', 'id'))
+                    ->multiple()
+                    ->relationship('roles', 'name')
                     ->searchable()
             ]);
     }
@@ -93,7 +94,7 @@ class UserResource extends Resource implements HasShieldPermissions
             'view',
             'view_any',
             // 'create',
-            // 'update',
+            'update',
             // 'delete',
             'delete_any',
         ];

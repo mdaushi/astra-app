@@ -11,16 +11,9 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Resources\Pages\Page;
 use Spatie\Permission\Models\Role;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PegawaiResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PegawaiResource\RelationManagers;
 use App\Filament\Resources\PegawaiResource\Pages\EditPegawai;
-use App\Models\Jabatan;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Filament\Forms\Components\BelongsToManyMultiSelect;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Factories\BelongsToRelationship;
 
 class PegawaiResource extends Resource implements HasShieldPermissions
 {
@@ -71,39 +64,6 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                 Forms\Components\TextInput::make('area')
                     ->required()
                     ->maxLength(255),
-                // Forms\Components\TextInput::make('user_id')
-                //     ->required(),
-                // Forms\Components\FileUpload::make('picture')
-                //     ->required()
-                //     ->image()
-                //     ->disk('public')
-                //     ->directory('picture')
-                //     ->preserveFilenames(),
-                // Forms\Components\Select::make('approvals_id')
-                //     ->label('Approvals')
-                //     // ->required()
-                //     ->relationship('approvalPaket', 'kode')
-                //     ->preload()
-                //     ->searchable(),
-                Forms\Components\Section::make('Akun')
-                    ->description('Pembuatan akun diperluhkan untuk dapat mengakses aplikasi ini')
-                    ->schema([
-                        Forms\Components\TextInput::make('email')
-                            ->unique(table: User::class)
-                            ->required()
-                            ->hidden(fn (Page $livewire) => $livewire instanceof EditPegawai)
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('password')
-                            ->password()
-                            ->required()
-                            ->maxLength(255)
-                            ->hidden(fn (Page $livewire) => $livewire instanceof EditPegawai),
-                        Forms\Components\Select::make('role')
-                            ->required()
-                            ->options(Role::all()->pluck('name', 'id'))
-                            ->searchable()
-                    ])
-                    ->columns(2),
                 Forms\Components\Section::make('Ekspedisi')
                     ->description('Pegawai ini mengirim barang dengan jenis Faktur/ tujuan dan alamat yang sama setiap harinya')
                     ->schema([
@@ -127,11 +87,7 @@ class PegawaiResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('jabatan.nama'),
                 Tables\Columns\TextColumn::make('kode_area'),
                 Tables\Columns\TextColumn::make('area'),
-                // Tables\Columns\ImageColumn::make('picture'),
-                // Tables\Columns\TextColumn::make('created_at')
-                //     ->dateTime(),
-                // Tables\Columns\TextColumn::make('updated_at')
-                //     ->dateTime(),
+                
             ])
             ->filters([
                 //

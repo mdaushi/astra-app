@@ -8,7 +8,6 @@ use App\Models\Jabatan;
 use App\Models\Pegawai;
 use App\Models\Golongan;
 use Filament\Pages\Actions;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\PegawaiResource;
@@ -35,7 +34,7 @@ class ListPegawais extends ListRecords
                         ->required()
                         ->label('Nama Jabatan'),
 
-                    // golongan 
+                    // golongan
                     ImportField::make('nama_golongan')
                         ->required()
                         ->label('Nama Golongan'),
@@ -47,14 +46,17 @@ class ListPegawais extends ListRecords
                     ImportField::make('npk')
                         ->required()
                         ->label('NPK'),
-                    
+
                     ImportField::make('nama')
                         ->required()
                         ->label('Nama Pegawai'),
-                    
+
                     ImportField::make('email')
                         ->required()
                         ->label('Email'),
+
+                    ImportField::make('whatsapp')
+                        ->required(),
 
                     ImportField::make('kode_area')
                         ->required()
@@ -67,7 +69,7 @@ class ListPegawais extends ListRecords
                     ImportField::make('is_faktur_ekspedisi')
                         ->required()
                         ->label('Pegawai Faktur Ekspedisi'),
-                      
+
                     ImportField::make('role')
                         ->required()
                         ->label('Role'),
@@ -83,8 +85,8 @@ class ListPegawais extends ListRecords
                     ImportField::make('approval3')
                         ->required()
                         ->label('Approval 3'),
-                ], columns:2)
-                ->handleRecordCreation(function($data){
+                ], columns: 2)
+                ->handleRecordCreation(function ($data) {
 
                     // record golongan
                     $golongan = $this->handleGolonganCreation($data);
@@ -92,13 +94,23 @@ class ListPegawais extends ListRecords
                     // // record jabatan
                     $jabatan = $this->handleJabatanCreation($data);
 
-                    // // record akun
+
+                    // roles string to array
+                    $rolesArray = explode(',', $data['role']);
+                    $rolesArrayCollect = collect();
+
+                    foreach ($rolesArray as $role) {
+                        $role = trim($role);
+                        $rolesArrayCollect->push($role);
+                    }
+
+                    // record akun
                     $user = User::create([
                         'name' => $data['nama'],
                         'email' => $data['email'],
                         'email_verified_at' => Carbon::now(),
                         'password' => Hash::make('1234567890')
-                    ])->assignRole($data['role']);
+                    ])->assignRole($rolesArrayCollect);
 
                     $pegawai = Pegawai::create([
                         'nama' => $data['nama'],
@@ -110,10 +122,12 @@ class ListPegawais extends ListRecords
                         'is_faktur_ekspedisi' => $data['is_faktur_ekspedisi'],
                         'approval1' => $data['approval1'],
                         'approval2' => $data['approval2'],
-                        'approval3' => $data['approval3']
+                        'approval3' => $data['approval3'],
+                        'whatsapp' => $data['whatsapp']
                     ]);
 
                     $pegawai->jabatan()->sync($jabatan);
+                    return $pegawai;
                 })
         ];
     }
@@ -123,7 +137,7 @@ class ListPegawais extends ListRecords
         $query = Golongan::query();
         $golongan = $query->where('nama', $data['nama_golongan'])->first();
 
-        if(!$golongan){
+        if (!$golongan) {
             $golongan = $query->create([
                 'nama' => $data['nama_golongan'],
                 'rate_hotel' => $data['rate_hotel']
@@ -141,14 +155,12 @@ class ListPegawais extends ListRecords
 
         $jabatanIdArray = collect();
 
-        $query = Jabatan::query();
-
         foreach ($dataArray as $item) {
-            $jabatan = $query->where('nama', $item)->first();
-    
-            if(!$jabatan)
-            {
-                $jabatan = $query->create([
+            $item = trim($item);
+            $jabatan = Jabatan::where('nama', 'like' , $item)->first();
+
+            if (!$jabatan) {
+                $jabatan = Jabatan::create([
                     'nama' => $item
                 ]);
             }
@@ -189,6 +201,6 @@ class ListPegawais extends ListRecords
             'password' => Hash::make('1234567890')
         ])->assignRole($data['role']);
 
-        return $user;     
+        return $user;
     }
 }
