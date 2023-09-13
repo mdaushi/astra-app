@@ -7,9 +7,11 @@ use App\Http\Integrations\watifier\Requests\GetQrcodeRequest;
 use App\Http\Integrations\watifier\Requests\InitInstanceRequest;
 use App\Http\Integrations\watifier\Requests\SendMessageRequest;
 use App\Http\Integrations\watifier\WatifierConnector;
+use Exception;
 use IbrahimBedir\FilamentDynamicSettingsPage\Models\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Saloon\Contracts\Response;
 
 class watifier extends Model
 {
@@ -68,9 +70,15 @@ class watifier extends Model
         $connector = new WatifierConnector();
         $sendMessage = new SendMessageRequest(key: $watifier_key, payload: $payload);
 
-        $response = $connector->send($sendMessage);
+        $promise = $connector->sendAsync($sendMessage);
 
-        return $response->json(); 
+        $promise
+            ->then(function (Response $response){
+                return $response->json();
+            })
+            ->otherwise(function(Exception $th){
+                // dd($th);
+            });
     }
 
 
