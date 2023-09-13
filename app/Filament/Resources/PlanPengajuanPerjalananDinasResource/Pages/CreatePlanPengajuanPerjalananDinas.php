@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\PlanPengajuanPerjalananDinasResource;
 use App\Models\Golongan;
+use App\Models\PlanKegiatanPengajuanPerjalananDinas;
 
 class CreatePlanPengajuanPerjalananDinas extends CreateRecord
 {
@@ -36,17 +37,20 @@ class CreatePlanPengajuanPerjalananDinas extends CreateRecord
 
         $saved = static::getModel()::create($data);
         
-        $kegiatanAll = [];
+        $kegiatanAll = collect();
         foreach ($data['kegiatan'] as $item) {
             $item['pengajuan_perjalanan_dinas_id'] = $saved->id;
 
             $rate_hotel = $this->findRateHotel();
             $item['rate_hotel'] = $rate_hotel;
 
-            array_push($kegiatanAll, $item);
+            $instanceKegiatanModel = new PlanKegiatanPengajuanPerjalananDinas($item);
+
+            $kegiatanAll->push($instanceKegiatanModel);
+
         }        
 
-        $saved->kegiatan_perjalanan_dinas()->sync($kegiatanAll);
+        $saved->kegiatan_perjalanan_dinas()->saveMany($kegiatanAll);
         // KegiatanPerjalananDinas::insert($kegiatanAll);
         return $saved;
     }

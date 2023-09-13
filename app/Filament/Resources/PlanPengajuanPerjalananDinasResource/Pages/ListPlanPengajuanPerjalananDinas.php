@@ -11,6 +11,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use App\Models\PlanPengajuanPerjalananDinas;
 use App\Filament\Resources\PlanPengajuanPerjalananDinasResource;
+use App\Models\KegiatanPerjalananDinas;
 
 class ListPlanPengajuanPerjalananDinas extends ListRecords
 {
@@ -38,10 +39,14 @@ class ListPlanPengajuanPerjalananDinas extends ListRecords
 
             $pengajuan = PengajuanPerjalananDinas::create($pengajuanReplicate);
 
+            $kegiatanCollect = collect();
             foreach ($kegiatan as $item) {
-                $newKegiatan = $item->replicate()->toArray();
-                $pengajuan->kegiatan_perjalanan_dinas()->sync([$newKegiatan], false);
+                $newKegiatan = new KegiatanPerjalananDinas($item->replicate()->toArray());
+                $kegiatanCollect->push($newKegiatan);
             }
+            
+
+            $pengajuan->kegiatan_perjalanan_dinas()->saveMany($kegiatanCollect);
 
             // approval notification
             ApprovalProcessed::dispatch($pengajuan);
