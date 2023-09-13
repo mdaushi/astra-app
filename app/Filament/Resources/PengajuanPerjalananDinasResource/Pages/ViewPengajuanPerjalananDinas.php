@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PengajuanPerjalananDinasResource\Pages;
 
+use App\Events\AgreedPengajuan;
 use Carbon\Carbon;
 use Filament\Pages\Actions;
 use App\Events\ApprovalProcessed;
@@ -76,18 +77,23 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
     {
         $userLogin = auth()->user();
         $rolesUser = $userLogin->getRoleNames()->toArray();
-        try {
-            $this->record->processApprove($rolesUser);
 
+        // DB::beginTransaction();
+        try {
             // send mail approval
             ApprovalProcessed::dispatch($this->record);
-
+            
             // send notif to user
             ApprovedProcessed::dispatch($this->record);
             
             // send notif pd bersama
-            // PDBarengProcessed::dispatch($this->record);
+            PDBarengProcessed::dispatch($this->record);
             
+            $this->record->processApprove($rolesUser);
+
+            AgreedPengajuan::dispatch($this->record);
+
+            // DB::commit();
             Notification::make()
                 ->title('Pengajuan berhasil diapprove')
                 ->success()
@@ -95,6 +101,8 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
             
             redirect()->route('filament.resources.pengajuan-perjalanan-dinas.index');
         } catch (\Throwable $th) {
+            // DB::rollBack();
+
             Notification::make()
                 ->title('Error, ada kendala')
                 ->danger()

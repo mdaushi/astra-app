@@ -76,10 +76,10 @@ class SendNotificationApprovedToUser
         
     }
 
-    private function sendToWhatsapp(string $approved_by, string $tanggal_pengajuan, string $nomor_pegawai)
+    private function sendToWhatsapp(string $approved_by, string $tanggal_pengajuan, ?string $nomor_pegawai)
     { 
         return watifier::sendMessage([
-            'id' => $nomor_pegawai, 
+            'id' => WatifierService::transformWhatsapp($nomor_pegawai), 
             'message' => WatifierService::processApprovalMessage(approved_by: $approved_by, tanggal_pengajuan: $tanggal_pengajuan)
         ]);
     }

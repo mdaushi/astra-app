@@ -28,7 +28,7 @@ class SendNotificationRejected
     public function handle(RejectedProcessed $event): void
     {
         $userPengaju = User::find($event->pengajuanPerjalananDinas->pegawai->user->id);
-        Notification::send($userPengaju, new PengajuanRejected($event->pengajuanPerjalananDinas, $userPengaju->name));
+        // Notification::send($userPengaju, new PengajuanRejected($event->pengajuanPerjalananDinas, $userPengaju->name));
 
         // send notif wa
         $this->sendToWhatsapp(
@@ -40,7 +40,7 @@ class SendNotificationRejected
     private function sendToWhatsapp(array $pegawai, string $tanggal_pengajuan)
     { 
         return watifier::sendMessage([
-            'id' => $pegawai['nomor'], 
+            'id' => WatifierService::transformWhatsapp($pegawai['nomor']), 
             'message' => WatifierService::rejectedApprovalMessage(pegawai: $pegawai['nama'], tanggal_pengajuan: $tanggal_pengajuan)
         ]);
     }

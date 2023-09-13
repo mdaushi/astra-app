@@ -6,12 +6,6 @@ use App\Models\User;
 use App\Models\watifier;
 use App\Events\ApprovalProcessed;
 use App\Services\WatifierService;
-use App\Notifications\ApprovalMail;
-use App\Notifications\PengajuanAgreed;
-use App\Notifications\PengajuanApproved;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Notification;
 
 class SendApprovalNotification
 {
@@ -42,7 +36,7 @@ class SendApprovalNotification
         // send mail for approval 1
         if(
             $event->pengajuanPerjalananDinas->sign_user_at &&
-            !$event->pengajuanPerjalananDinas->{$columns[$order[2]]}
+            !$event->pengajuanPerjalananDinas->{$columns[$order[0]]}
             ){
                 $approval = $event->pengajuanPerjalananDinas->pegawai->approval1; 
 
@@ -62,7 +56,7 @@ class SendApprovalNotification
         // send mail for approval 2
         if(
             $event->pengajuanPerjalananDinas->{$columns[$order[0]]} &&
-            !$event->pengajuanPerjalananDinas->{$columns[$order[2]]}
+            !$event->pengajuanPerjalananDinas->{$columns[$order[1]]}
             ){
                 $approval = $event->pengajuanPerjalananDinas->pegawai->approval2; 
                 $user = User::with('pegawai')->where('email', $approval)->first();
@@ -99,8 +93,13 @@ class SendApprovalNotification
         //     $event->pengajuanPerjalananDinas->{$columns[$order[2]]}
         //     ){
         //         $pegawai = $event->pengajuanPerjalananDinas->pegawai;
-        //         // $user = User::find($pegawai->user->id);
         //         // Notification::send($user, new PengajuanAgreed($event->pengajuanPerjalananDinas));
+
+        //         // send notif whatsapp
+        //         watifier::sendMessage([
+        //             'id' => WatifierService::transformWhatsapp($pegawai->whatsapp),
+        //             'message' => WatifierService::agreedPengajuanMessage($pegawai->nama)
+        //         ]);
         // }
 
         
@@ -109,7 +108,7 @@ class SendApprovalNotification
     private function sendToWhatsapp(array $approved_by, string $pegawai, string $link_pengajuan)
     { 
         return watifier::sendMessage([
-            'id' => $approved_by['nomor'], 
+            'id' => WatifierService::transformWhatsapp($approved_by['nomor']), 
             'message' => WatifierService::requestApprovalMessage(approved_by: $approved_by['nama'], pegawai: $pegawai, link_pengajuan: $link_pengajuan)
         ]);
     }

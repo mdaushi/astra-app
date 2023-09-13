@@ -67,7 +67,7 @@ class SendPDBarengNotification
                 $pegawai = $value->pegawai;
                 $user = User::find($pegawai->user->id);
                 
-                Notification::send($user, new PDBarengNotification($pegawai->user->name, $nameSendingString));
+                // Notification::send($user, new PDBarengNotification($pegawai->user->name, $nameSendingString));
 
                 $this->sendToWhatsapp(
                     pegawai: [
@@ -83,7 +83,7 @@ class SendPDBarengNotification
     private function sendToWhatsapp(array $pegawai, string $pegawai_pd_bersama)
     { 
         return watifier::sendMessage([
-            'id' => $pegawai['nomor'], 
+            'id' => WatifierService::transformWhatsapp($pegawai['nomor']), 
             'message' => WatifierService::PdBersamaMessage(pegawai: $pegawai['nama'], pegawai_pd_bersama: $pegawai_pd_bersama)
         ]);
     }

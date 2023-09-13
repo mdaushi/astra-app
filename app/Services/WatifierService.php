@@ -56,9 +56,31 @@ class WatifierService
     {
         $text = Setting::where('key', 'pd.bersama.message')->value('value');
 
-        $text = Setting::replaceString(from: "{{pegawai}}", to: $pegawai, string: $text);
-        $text = Setting::replaceString(from: "{{pegawai_pd_bersama}}", to: $pegawai_pd_bersama, string: $text);
+        $text = self::replaceString(from: "{{pegawai}}", to: $pegawai, string: $text);
+        $text = self::replaceString(from: "{{pegawai_pd_bersama}}", to: $pegawai_pd_bersama, string: $text);
 
         return $text;
+    }
+
+    public static function agreedPengajuanMessage(string $pegawai): string
+    {
+        $text = Setting::where('key', 'agreed.pengajuan.message')->value('value');
+
+        $text = self::replaceString(from: "{{pegawai}}", to: $pegawai, string: $text);
+
+        return $text;
+    }
+
+    public static function transformWhatsapp(string $phone)
+    {
+        // 62xxx:62@s.whatsapp.net
+
+        $prefix = substr($phone, 0, 1);
+        if($prefix != '62')
+        {
+            $phone = substr_replace($phone, '62', 0, 1);
+        }
+
+        return $phone . ':62@s.whatsapp.net';
     }
 }

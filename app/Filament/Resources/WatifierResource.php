@@ -45,11 +45,10 @@ class WatifierResource extends Resource
                 Tables\Actions\Action::make('cek_koneksi')
                     ->action(function(watifier $wa){
                         $status = $wa->statusSession();
-
                         // error
-                        if($status['error']){
+                        if( $status == null or $status['error']){
                             return Notification::make()
-                            ->title('Whatsapp '.$status['message'])
+                            ->title('Whatsapp '.($status['message'] ?? 'server bermasalah'))
                             ->warning()
                             ->send();
                         }

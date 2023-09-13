@@ -70,15 +70,9 @@ class watifier extends Model
         $connector = new WatifierConnector();
         $sendMessage = new SendMessageRequest(key: $watifier_key, payload: $payload);
 
-        $promise = $connector->sendAsync($sendMessage);
+        $response = $connector->send($sendMessage);
 
-        $promise
-            ->then(function (Response $response){
-                return $response->json();
-            })
-            ->otherwise(function(Exception $th){
-                // dd($th);
-            });
+        return $response->json();
     }
 
 

@@ -32,7 +32,7 @@ class SendNotificationLayananOther
             $gaColumn = config('approval.column.ga');
             $emailGa = auth()->user()->pegawai->{$gaColumn};
             $gaUser = User::where('email', $emailGa)->first();
-            Notification::send($gaUser, new LayananOtherMail($event->ekspedisi->pegawai->nama, $event->ekspedisi->alasan_jenis_layanan_other));
+            // Notification::send($gaUser, new LayananOtherMail($event->ekspedisi->pegawai->nama, $event->ekspedisi->alasan_jenis_layanan_other));
 
             // send notif wa
             $this->sendToWhatsapp(
@@ -46,7 +46,7 @@ class SendNotificationLayananOther
     private function sendToWhatsapp(string $pegawai, string $alasan, string $wa_approved_by)
     { 
         return watifier::sendMessage([
-            'id' => $wa_approved_by, 
+            'id' => WatifierService::transformWhatsapp($wa_approved_by), 
             'message' => WatifierService::layananOtherMessage(pegawai: $pegawai, alasan: $alasan)
         ]);
     }
