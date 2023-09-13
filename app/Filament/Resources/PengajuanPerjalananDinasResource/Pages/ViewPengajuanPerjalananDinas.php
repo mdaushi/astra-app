@@ -74,10 +74,10 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
 
     public function approve(): void
     {
-        $roleUser = auth()->user()->roles()->first()->name;
-        DB::beginTransaction();
+        $userLogin = auth()->user();
+        $rolesUser = $userLogin->getRoleNames()->toArray();
         try {
-            $this->record->processApprove(strtolower($roleUser));
+            $this->record->processApprove($rolesUser);
 
             // send mail approval
             ApprovalProcessed::dispatch($this->record);
@@ -88,14 +88,13 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
             // send notif pd bersama
             // PDBarengProcessed::dispatch($this->record);
             
-            DB::commit();
             Notification::make()
                 ->title('Pengajuan berhasil diapprove')
                 ->success()
                 ->send();
-
+            
+            redirect()->route('filament.resources.pengajuan-perjalanan-dinas.index');
         } catch (\Throwable $th) {
-            DB::rollBack();
             Notification::make()
                 ->title('Error, ada kendala')
                 ->danger()

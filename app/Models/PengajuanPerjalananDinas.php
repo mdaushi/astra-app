@@ -134,20 +134,22 @@ class PengajuanPerjalananDinas extends Model
     private function authorizationPengjuan($query): Builder
     {
         if($this->canViewAllPengajuan($query)){
-            return $this->authorizationWhereRole($query);;
+            return $this->authorizationWhereRole($query);
         }
         return $query->whereBelongsTo(auth()->user()->pegawai);;
     }
 
     private function canViewAllPengajuan($query)
     {
-        $roleUser = auth()->user()->roles()->first()->name;
-        
+        $rolesUser = auth()->user()->getRoleNames()->toArray();
+
+        $roleMatch = array_intersect(array_map('strtolower', $rolesUser), config('approval.order'));
         // jika approval, maka get data sesuai pegawainya
-        if(in_array(strtolower($roleUser), config('approval.order'))){
+        if(count($roleMatch) > 0){
             return $this->queryHasApproval($query)->exists();
         }
-        else if($roleUser == 'admin'){
+
+        else if(in_array('admin', $rolesUser)){
             return true;
         }
 
@@ -177,20 +179,34 @@ class PengajuanPerjalananDinas extends Model
 
     private function authorizationWhereRole($query)
     {
-        if(auth()->user()->roles[0]->name == 'admin'){
+
+        $rolesUser = array_map('strtolower',auth()->user()->getRoleNames()->toArray());
+
+        if(in_array('admin', $rolesUser)){
             return $query;
         }
         
-        $ordering = $this->orderingApproval();
+        $approvals = config('approval.order');
+        $rolesMatch = array_intersect($approvals, $rolesUser);
 
         $query = $this->queryHasApproval($query);
-        
-        if($ordering['order'] == 1){
-            return $query->whereNotNull('sign_user_at');
+
+        foreach ($rolesMatch as $role ) {
+            switch ($role) {
+                case 'ga':
+                    $query->orWhereNull('sign_ga_at');
+                    break;
+                case 'chief':
+                    $query->orWhereNull('sign_chief_at');
+                    break;
+                case 'hrd':
+                    $query->orWhereNull('sign_hrd_at');
+                    break;
+                default:
+                    break;
+            }
         }
-
-        return $query->whereNotNull($ordering['prev_column']);
-
+        return $query;
     }
 
     private function orderingApproval()
@@ -251,19 +267,22 @@ class PengajuanPerjalananDinas extends Model
         return $this->{$column} ? true : false;
     }
 
-    public function processApprove($role)
+    public function processApprove(array $roles)
     {
-        $methodsApprove = [
-            'chief' => 'approve'.ucfirst($role),
-            'hrd' => 'approve'.ucfirst($role),
-            'ga' => 'approve'.ucfirst($role)
-        ];
-
-        if(!array_key_exists($role, $methodsApprove)){
-            throw new Exception('role tidak diizinkan');
+        foreach ($roles as $role) {
+            $methodsApprove = [
+                'chief' => 'approve'.ucfirst($role),
+                'hrd' => 'approve'.ucfirst($role),
+                'ga' => 'approve'.ucfirst($role)
+            ];
+    
+            if(!array_key_exists(strtolower($role), $methodsApprove)){
+                throw new Exception('role tidak diizinkan');
+            }
+    
+            $this->{$methodsApprove[strtolower($role)]}();
+            
         }
-
-        $this->{$methodsApprove[$role]}();
 
     }
 
