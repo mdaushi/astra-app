@@ -19,7 +19,8 @@ class ApprovedProcessed
      * Create a new event instance.
      */
     public function __construct(
-        public PengajuanPerjalananDinas $pengajuanPerjalananDinas
+        public PengajuanPerjalananDinas $pengajuanPerjalananDinas,
+        public $pegawaiApproval
     )
     {
         //

@@ -48,7 +48,8 @@ class SendApprovalNotification
                 $this->sendToWhatsapp(
                     approved_by: ['nomor' => $user->pegawai->whatsapp, 'nama' => $user->name],
                     pegawai: $event->pengajuanPerjalananDinas->nama,
-                    link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id)
+                    link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id),
+                    uuid: $this->uuidGenerate($event->pengajuanPerjalananDinas->id)
                 );
                 
         }
@@ -66,7 +67,8 @@ class SendApprovalNotification
                 $this->sendToWhatsapp(
                     approved_by: ['nomor' => $user->pegawai->whatsapp, 'nama' => $user->name],
                     pegawai: $event->pengajuanPerjalananDinas->nama,
-                    link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id)
+                    link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id),
+                    uuid: $this->uuidGenerate($event->pengajuanPerjalananDinas->id)
                 );
         }
 
@@ -83,7 +85,8 @@ class SendApprovalNotification
                 $this->sendToWhatsapp(
                     approved_by: ['nomor' => $user->pegawai->whatsapp, 'nama' => $user->name],
                     pegawai: $event->pengajuanPerjalananDinas->nama,
-                    link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id)
+                    link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id),
+                    uuid: $this->uuidGenerate($event->pengajuanPerjalananDinas->id)
                 );
         }
 
@@ -105,11 +108,16 @@ class SendApprovalNotification
         
     }
 
-    private function sendToWhatsapp(array $approved_by, string $pegawai, string $link_pengajuan)
+    private function sendToWhatsapp(array $approved_by, string $pegawai, string $link_pengajuan, $uuid)
     { 
         return watifier::sendMessage([
             'id' => WatifierService::transformWhatsapp($approved_by['nomor']), 
-            'message' => WatifierService::requestApprovalMessage(approved_by: $approved_by['nama'], pegawai: $pegawai, link_pengajuan: $link_pengajuan)
+            'message' => WatifierService::requestApprovalMessage(approved_by: $approved_by['nama'], pegawai: $pegawai, link_pengajuan: $link_pengajuan, uuid: $uuid)
         ]);
+    }
+
+    private function uuidGenerate($id)
+    {
+        return '#ASTRA' . $id;
     }
 }

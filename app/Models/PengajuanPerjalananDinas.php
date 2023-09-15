@@ -267,7 +267,7 @@ class PengajuanPerjalananDinas extends Model
         return $this->{$column} ? true : false;
     }
 
-    public function processApprove(array $roles)
+    public function processApprove($pegawai, array $roles)
     {
         foreach ($roles as $role) {
             $methodsApprove = [
@@ -280,31 +280,31 @@ class PengajuanPerjalananDinas extends Model
                 throw new Exception('role tidak diizinkan');
             }
     
-            $this->{$methodsApprove[strtolower($role)]}();
+            $this->{$methodsApprove[strtolower($role)]}($pegawai);
             
         }
 
     }
 
-    public function approveChief()
+    public function approveChief($pegawai)
     {
         $this->sign_chief_at = Carbon::now();
-        $this->nama_chief_signed = auth()->user()->pegawai->nama;
+        $this->nama_chief_signed = $pegawai->nama;
         $this->save();
     }
 
-    public function approveHrd()
+    public function approveHrd($pegawai)
     {
         $this->sign_hrd_at = Carbon::now();
-        $this->nama_hrd_signed = auth()->user()->pegawai->nama;
+        $this->nama_hrd_signed = $pegawai->nama;
         $this->no_surat = $this->maxNoSurat();
         $this->save();
     }
 
-    public function approveGa()
+    public function approveGa($pegawai)
     {
         $this->sign_ga_at = Carbon::now();
-        $this->nama_ga_signed = auth()->user()->pegawai->nama;
+        $this->nama_ga_signed = $pegawai->nama;
         $this->save();
     }
 

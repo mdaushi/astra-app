@@ -80,16 +80,16 @@ class ViewPengajuanPerjalananDinas extends ViewRecord
 
         // DB::beginTransaction();
         try {
+            $this->record->processApprove($userLogin->pegawai, $rolesUser);
+
             // send mail approval
             ApprovalProcessed::dispatch($this->record);
             
             // send notif to user
-            ApprovedProcessed::dispatch($this->record);
+            ApprovedProcessed::dispatch($this->record, $userLogin->pegawai);
             
             // send notif pd bersama
             PDBarengProcessed::dispatch($this->record);
-            
-            $this->record->processApprove($rolesUser);
 
             AgreedPengajuan::dispatch($this->record);
 
