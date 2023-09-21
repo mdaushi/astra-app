@@ -67,15 +67,16 @@ class SendPDBarengNotification
                 $pegawai = $value->pegawai;
                 $user = User::find($pegawai->user->id);
                 
-                // Notification::send($user, new PDBarengNotification($pegawai->user->name, $nameSendingString));
-
-                $this->sendToWhatsapp(
-                    pegawai: [
-                        'nomor' => $user->pegawai->whatsapp,
-                        'nama' => $user->name
-                    ],
-                    pegawai_pd_bersama: $nameSendingString
+                if(!empty($nameSendingString)){
+                    $this->sendToWhatsapp(
+                        pegawai: [
+                            'nomor' => $user->pegawai->whatsapp,
+                            'nama' => $user->name
+                        ],
+                        pegawai_pd_bersama: $nameSendingString
                     );
+                }
+                
             }
         }
     }

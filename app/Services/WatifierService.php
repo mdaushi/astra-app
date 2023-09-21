@@ -82,6 +82,6 @@ class WatifierService
             $phone = substr_replace($phone, '62', 0, 1);
         }
 
-        return $phone . ':62@s.whatsapp.net';
+        return $phone . '@s.whatsapp.net';
     }
 }

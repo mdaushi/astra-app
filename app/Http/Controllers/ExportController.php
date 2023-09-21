@@ -35,7 +35,7 @@ class ExportController extends Controller
             $sign1 = base64_encode(QrCode::generate($this->scanQRCodeResult($pengajuan->nama_ga_signed, $pengajuan->sign_ga_at)));
         }
 
-        $format_surat = 'No. : PLMS/MKS/'. $pengajuan->no_surat .'/'. $this->convertToRoman(Carbon::now()->format('m')) .'/' . Carbon::now()->format('y');
+        $format_surat = 'No. : PD/MKS/'. $pengajuan->no_surat .'/'. $this->convertToRoman(Carbon::now()->format('m')) .'/' . Carbon::now()->format('y');
 
         // return $approval1;
         $pdf = Pdf::loadView('export.print', 

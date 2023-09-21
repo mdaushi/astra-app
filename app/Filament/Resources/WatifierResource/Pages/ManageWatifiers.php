@@ -27,7 +27,8 @@ class ManageWatifiers extends ManageRecords
     public function qrcode(){
 
         $status = watifier::statusSession();
-        if(!$status['instance_data']['user']){
+        
+        if($status['error'] or !$status['instance_data']['user']){
             watifier::initInstanceQrcode();
             sleep(5);   
         }

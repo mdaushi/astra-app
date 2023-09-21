@@ -60,7 +60,6 @@
         <tr>
             <td>
                 <p>PT ASTRA INTERNATIONAL Tbk - HONDA</p>
-                <p>CABANG : POLMAS</p>
             </td>
             <td>
                 <img style="float:right;width:150px" src="{{ public_path('/img/Gambar1.png') }}" alt="">
