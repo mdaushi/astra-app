@@ -54,7 +54,7 @@ class WatifierResource extends Resource
                         }
 
                         // jika belum terkoneksi
-                        if(!$status['instance_data']['user']){
+                        if(array_key_exists('user', $status['instance_data'])){
                             return Notification::make()
                             ->title('Whatsapp belum terkoneksi')
                             ->warning()
