@@ -16,7 +16,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->can('view_any_plan::pengajuan::perjalanan::dinas');
     }
@@ -28,7 +28,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\PlanPengajuanPerjalananDinas  $planPengajuanPerjalananDinas
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas)
+    public function view(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas): bool
     {
         return $user->can('view_plan::pengajuan::perjalanan::dinas');
     }
@@ -39,7 +39,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->can('create_plan::pengajuan::perjalanan::dinas');
     }
@@ -51,7 +51,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\PlanPengajuanPerjalananDinas  $planPengajuanPerjalananDinas
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas)
+    public function update(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas): bool
     {
         return $user->can('update_plan::pengajuan::perjalanan::dinas');
     }
@@ -63,7 +63,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\PlanPengajuanPerjalananDinas  $planPengajuanPerjalananDinas
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas)
+    public function delete(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas): bool
     {
         return $user->can('delete_plan::pengajuan::perjalanan::dinas');
     }
@@ -74,7 +74,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function deleteAny(User $user)
+    public function deleteAny(User $user): bool
     {
         return $user->can('delete_any_plan::pengajuan::perjalanan::dinas');
     }
@@ -86,7 +86,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\PlanPengajuanPerjalananDinas  $planPengajuanPerjalananDinas
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas)
+    public function forceDelete(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas): bool
     {
         return $user->can('force_delete_plan::pengajuan::perjalanan::dinas');
     }
@@ -97,7 +97,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDeleteAny(User $user)
+    public function forceDeleteAny(User $user): bool
     {
         return $user->can('force_delete_any_plan::pengajuan::perjalanan::dinas');
     }
@@ -109,7 +109,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\PlanPengajuanPerjalananDinas  $planPengajuanPerjalananDinas
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas)
+    public function restore(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas): bool
     {
         return $user->can('restore_plan::pengajuan::perjalanan::dinas');
     }
@@ -120,7 +120,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restoreAny(User $user)
+    public function restoreAny(User $user): bool
     {
         return $user->can('restore_any_plan::pengajuan::perjalanan::dinas');
     }
@@ -132,7 +132,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\PlanPengajuanPerjalananDinas  $planPengajuanPerjalananDinas
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function replicate(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas)
+    public function replicate(User $user, PlanPengajuanPerjalananDinas $planPengajuanPerjalananDinas): bool
     {
         return $user->can('replicate_plan::pengajuan::perjalanan::dinas');
     }
@@ -143,7 +143,7 @@ class PlanPengajuanPerjalananDinasPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function reorder(User $user)
+    public function reorder(User $user): bool
     {
         return $user->can('reorder_plan::pengajuan::perjalanan::dinas');
     }

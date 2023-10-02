@@ -16,7 +16,7 @@ class PegawaiPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->can('view_any_pegawai');
     }
@@ -28,7 +28,7 @@ class PegawaiPolicy
      * @param  \App\Models\Pegawai  $pegawai
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Pegawai $pegawai)
+    public function view(User $user, Pegawai $pegawai): bool
     {
         return $user->can('view_pegawai');
     }
@@ -39,7 +39,7 @@ class PegawaiPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->can('create_pegawai');
     }
@@ -51,7 +51,7 @@ class PegawaiPolicy
      * @param  \App\Models\Pegawai  $pegawai
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Pegawai $pegawai)
+    public function update(User $user, Pegawai $pegawai): bool
     {
         return $user->can('update_pegawai');
     }
@@ -63,7 +63,7 @@ class PegawaiPolicy
      * @param  \App\Models\Pegawai  $pegawai
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Pegawai $pegawai)
+    public function delete(User $user, Pegawai $pegawai): bool
     {
         return $user->can('delete_pegawai');
     }
@@ -74,7 +74,7 @@ class PegawaiPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function deleteAny(User $user)
+    public function deleteAny(User $user): bool
     {
         return $user->can('delete_any_pegawai');
     }
@@ -86,7 +86,7 @@ class PegawaiPolicy
      * @param  \App\Models\Pegawai  $pegawai
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Pegawai $pegawai)
+    public function forceDelete(User $user, Pegawai $pegawai): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -97,7 +97,7 @@ class PegawaiPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDeleteAny(User $user)
+    public function forceDeleteAny(User $user): bool
     {
         return $user->can('{{ ForceDeleteAny }}');
     }
@@ -109,7 +109,7 @@ class PegawaiPolicy
      * @param  \App\Models\Pegawai  $pegawai
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Pegawai $pegawai)
+    public function restore(User $user, Pegawai $pegawai): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -120,7 +120,7 @@ class PegawaiPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restoreAny(User $user)
+    public function restoreAny(User $user): bool
     {
         return $user->can('{{ RestoreAny }}');
     }
@@ -132,7 +132,7 @@ class PegawaiPolicy
      * @param  \App\Models\Pegawai  $pegawai
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function replicate(User $user, Pegawai $pegawai)
+    public function replicate(User $user, Pegawai $pegawai): bool
     {
         return $user->can('{{ Replicate }}');
     }
@@ -143,7 +143,7 @@ class PegawaiPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function reorder(User $user)
+    public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
     }

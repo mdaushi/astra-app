@@ -16,7 +16,7 @@ class GolonganPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->can('view_any_golongan');
     }
@@ -28,7 +28,7 @@ class GolonganPolicy
      * @param  \App\Models\Golongan  $golongan
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Golongan $golongan)
+    public function view(User $user, Golongan $golongan): bool
     {
         return $user->can('view_golongan');
     }
@@ -39,7 +39,7 @@ class GolonganPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->can('create_golongan');
     }
@@ -51,7 +51,7 @@ class GolonganPolicy
      * @param  \App\Models\Golongan  $golongan
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Golongan $golongan)
+    public function update(User $user, Golongan $golongan): bool
     {
         return $user->can('update_golongan');
     }
@@ -63,7 +63,7 @@ class GolonganPolicy
      * @param  \App\Models\Golongan  $golongan
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Golongan $golongan)
+    public function delete(User $user, Golongan $golongan): bool
     {
         return $user->can('delete_golongan');
     }
@@ -74,7 +74,7 @@ class GolonganPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function deleteAny(User $user)
+    public function deleteAny(User $user): bool
     {
         return $user->can('delete_any_golongan');
     }
@@ -86,7 +86,7 @@ class GolonganPolicy
      * @param  \App\Models\Golongan  $golongan
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Golongan $golongan)
+    public function forceDelete(User $user, Golongan $golongan): bool
     {
         return $user->can('force_delete_golongan');
     }
@@ -97,7 +97,7 @@ class GolonganPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDeleteAny(User $user)
+    public function forceDeleteAny(User $user): bool
     {
         return $user->can('force_delete_any_golongan');
     }
@@ -109,7 +109,7 @@ class GolonganPolicy
      * @param  \App\Models\Golongan  $golongan
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Golongan $golongan)
+    public function restore(User $user, Golongan $golongan): bool
     {
         return $user->can('restore_golongan');
     }
@@ -120,7 +120,7 @@ class GolonganPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restoreAny(User $user)
+    public function restoreAny(User $user): bool
     {
         return $user->can('restore_any_golongan');
     }
@@ -132,7 +132,7 @@ class GolonganPolicy
      * @param  \App\Models\Golongan  $golongan
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function replicate(User $user, Golongan $golongan)
+    public function replicate(User $user, Golongan $golongan): bool
     {
         return $user->can('replicate_golongan');
     }
@@ -143,7 +143,7 @@ class GolonganPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function reorder(User $user)
+    public function reorder(User $user): bool
     {
         return $user->can('reorder_golongan');
     }
