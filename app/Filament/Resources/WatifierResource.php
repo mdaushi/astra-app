@@ -43,6 +43,7 @@ class WatifierResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('cek_koneksi')
+                    ->label('Check')
                     ->action(function(watifier $wa){
                         $status = $wa->statusSession();
                         // error
@@ -54,11 +55,18 @@ class WatifierResource extends Resource
                         }
 
                         // jika belum terkoneksi
-                        if(array_key_exists('user', $status['instance_data'])){
+                        if(!array_key_exists('user', $status['instance_data'])){
                             return Notification::make()
                             ->title('Whatsapp belum terkoneksi')
                             ->warning()
                             ->send(); 
+                        }
+                        
+                        if(empty($status['instance_data']['user'])){
+                            return Notification::make()
+                            ->title('Whatsapp belum terkoneksi')
+                            ->warning()
+                            ->send();
                         }
 
                         Notification::make()
@@ -68,6 +76,17 @@ class WatifierResource extends Resource
                         
                     }),
                 StartConnectAction::make(),
+                Tables\Actions\Action::make('restart')
+                    ->action(function(watifier $wa){
+                        $wa->restart();
+
+                        Notification::make()
+                            ->title('logout sukses')
+                            ->success()
+                            ->send();
+                    })
+                    ->color('danger')
+                    ->icon('heroicon-s-logout')
             ])
             ->bulkActions([
             ]);

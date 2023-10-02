@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Http\Integrations\watifier\Requests\CheckSessionRequest;
+use App\Http\Integrations\watifier\Requests\DeleteRequest;
 use App\Http\Integrations\watifier\Requests\GetQrcodeRequest;
 use App\Http\Integrations\watifier\Requests\InitInstanceRequest;
+use App\Http\Integrations\watifier\Requests\LogoutRequest;
 use App\Http\Integrations\watifier\Requests\SendMessageRequest;
 use App\Http\Integrations\watifier\WatifierConnector;
 use Exception;
@@ -73,6 +75,20 @@ class watifier extends Model
         $response = $connector->send($sendMessage);
 
         return $response->json();
+    }
+
+    static function restart(): void
+    {
+        $watifier_key = env("WATIFIER_KEY");
+
+        $connector = new WatifierConnector();
+
+        $logoutRequest = new LogoutRequest($watifier_key);
+        $deleteRequest = new DeleteRequest($watifier_key);
+
+        $connector->send($logoutRequest);
+        sleep(5);
+        $connector->send($deleteRequest);
     }
 
 

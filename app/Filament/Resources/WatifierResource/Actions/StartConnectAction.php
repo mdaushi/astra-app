@@ -14,14 +14,14 @@ class StartConnectAction extends Action
 
     public static function getDefaultName(): ?string
     {
-        return 'Mulai Koneksi';
+        return 'Mulai';
     }
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->label('Mulai Koneksi');
+        $this->label('Mulai');
 
         $this->modalHeading(fn (): string => __('filament-support::actions/view.single.modal.heading', ['label' => 'Koneksi']));
 
