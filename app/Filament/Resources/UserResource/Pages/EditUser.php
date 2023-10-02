@@ -18,12 +18,12 @@ class EditUser extends EditRecord
         ];
     }
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
-    {
-        $record->update($data);
-        $record->syncRoles($data['role']);
-        return $record;
-    }
+    // protected function handleRecordUpdate(Model $record, array $data): Model
+    // {
+    //     $record->update($data);
+    //     // $record->syncRoles($data['role']);
+    //     return $record;
+    // }
 
     protected function getRedirectUrl(): string
     {
