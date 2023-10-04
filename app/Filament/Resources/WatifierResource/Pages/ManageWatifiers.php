@@ -24,18 +24,32 @@ class ManageWatifiers extends ManageRecords
         return watifier::getSession();
     }
 
-    public function qrcode(){
+    public function instanceWithqrcode(){
 
         $status = watifier::statusSession();
         
-        if($status['error'] or !$status['instance_data']['user']){
+        if($status['error']){
             watifier::initInstanceQrcode();
-            sleep(5);   
+            $status = watifier::statusSession();
         }
 
         $qrcode = watifier::getQrcode();
 
-        return $qrcode['qrcode'];
+        $displaying = "<img class='text-center' src='" . $qrcode['qrcode'] . "'> </br> <p class'text-center'>Jika terdapat masalah saat scan qrcode, silahkan restart dan mulai ulang.</p>";
+
+        if($qrcode['qrcode'] ==""){
+            $displaying = "<p class='text-bold text-center text-xl'>Tunggu beberapa saat...</p>";
+        }
+
+        if($qrcode['qrcode'] == " "){
+            $displaying = "<p class='text-bold text-center text-xl text-red-500'>Gagal memuat Qrcode atau telah expired. silahkan restart dan mulai ulang</p>";
+        }
+
+        if($status['instance_data']['user']){
+            $displaying = '<p class="text-bold text-center text-xl">Perangkat telah tersambung</p>';
+        }
+
+        return $displaying;
     }
 
 

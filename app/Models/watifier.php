@@ -87,7 +87,7 @@ class watifier extends Model
         $deleteRequest = new DeleteRequest($watifier_key);
 
         $connector->send($logoutRequest);
-        sleep(5);
+        // sleep(2);
         $connector->send($deleteRequest);
     }
 

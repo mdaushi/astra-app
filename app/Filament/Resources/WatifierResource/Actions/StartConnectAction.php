@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\WatifierResource\Actions;
 
+use App\Models\watifier;
 use Filament\Tables\Actions\Action;
 use Closure;
-use Filament\Forms\ComponentContainer;
-use Illuminate\Database\Eloquent\Model;
 
 class StartConnectAction extends Action 
 {
@@ -23,7 +22,7 @@ class StartConnectAction extends Action
 
         $this->label('Mulai');
 
-        $this->modalHeading(fn (): string => __('filament-support::actions/view.single.modal.heading', ['label' => 'Koneksi']));
+        $this->modalHeading('Scan QRCode dibawah untuk menghubungkan perangkat');
 
         $this->modalActions(fn (): array => array_merge(
             $this->getExtraModalActions(),
@@ -34,7 +33,7 @@ class StartConnectAction extends Action
 
         $this->icon('heroicon-s-link');
 
-        $this->action(static function (): void {            
+        $this->action(static function (): void {  
         });
 
         $this->modalContent(view('filament.resources.watifier.actions.connect'));
