@@ -31,8 +31,9 @@ class SendNotificationApprovedToUser
     {
         // $order = config('approval.order');
         // $columns = config('approval.roleWithColumnFilter');
-
-        if($event->pengajuanPerjalananDinas->pegawai->approval1 == $event->pegawaiApproval->user->email){
+        $approval1 = strtolower($event->pengajuanPerjalananDinas->pegawai->approval1);
+        $approvalvalidate = strtolower($event->pegawaiApproval->user->email);
+        if($approval1 == $approvalvalidate){
             $approval = $event->pengajuanPerjalananDinas->pegawai->approval1; 
             $user = User::where('email', $approval)->first();
             $userPengaju = User::with('pegawai')->find($event->pengajuanPerjalananDinas->pegawai->user->id);
@@ -46,7 +47,8 @@ class SendNotificationApprovedToUser
             );
         }
 
-        if($event->pengajuanPerjalananDinas->pegawai->approval2 == $event->pegawaiApproval->user->email){
+        $approval2 = strtolower($event->pengajuanPerjalananDinas->pegawai->approval2);
+        if($approval2 == $approvalvalidate){
             $approval = $event->pengajuanPerjalananDinas->pegawai->approval2; 
             $user = User::where('email', $approval)->first();
             $userPengaju = User::with('pegawai')->find($event->pengajuanPerjalananDinas->pegawai->user->id);
@@ -60,7 +62,8 @@ class SendNotificationApprovedToUser
             );
         }
 
-        if($event->pengajuanPerjalananDinas->pegawai->approval3 == $event->pegawaiApproval->user->email){
+        $approval3 = strtolower($event->pengajuanPerjalananDinas->pegawai->approval3);
+        if($approval3 == $approvalvalidate){
             $approval = $event->pengajuanPerjalananDinas->pegawai->approval3; 
             $user = User::where('email', $approval)->first();
             $userPengaju = User::with('pegawai')->find($event->pengajuanPerjalananDinas->pegawai->user->id);

@@ -276,11 +276,10 @@ class PengajuanPerjalananDinas extends Model
                 'ga' => 'approve'.ucfirst($role)
             ];
     
-            if(!array_key_exists(strtolower($role), $methodsApprove)){
-                throw new Exception('role tidak diizinkan');
+            if(array_key_exists(strtolower($role), $methodsApprove)){
+                $this->{$methodsApprove[strtolower($role)]}($pegawai);
             }
     
-            $this->{$methodsApprove[strtolower($role)]}($pegawai);
             
         }
 
