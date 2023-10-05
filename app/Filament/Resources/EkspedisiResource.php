@@ -248,7 +248,7 @@ class EkspedisiResource extends Resource
                             ->label('No Resi')
                             ->required(),
                     ])
-                    ->visible(fn (Ekspedisi $record): bool => auth()->user()->can('resi_ekspedisi', $record)),
+                    ->visible(fn (Ekspedisi $record): bool => auth()->user()->hasRole('kurir')),
                 Tables\Actions\Action::make('status')
                     ->label('Upd Status')
                     ->requiresConfirmation()
@@ -270,7 +270,7 @@ class EkspedisiResource extends Resource
                             ->success()
                             ->send();
                     })
-                    ->visible(fn (Ekspedisi $record): bool => auth()->user()->can('resi_ekspedisi', $record)),
+                    ->visible(fn (Ekspedisi $record): bool => auth()->user()->hasRole('kurir')),
 
             ])
             ->bulkActions([
