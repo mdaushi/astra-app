@@ -11,12 +11,15 @@ class WatifierService
         return str_replace($from, $to, $string);
     }
 
-    public static function requestApprovalMessage(string $approved_by, string $pegawai, string $link_pengajuan, $uuid): string
+    public static function requestApprovalMessage(string $approved_by, string $pegawai, string $tujuan_pd, string $tanggal_pd, string $transportasi_pd, string $link_pengajuan, $uuid): string
     {
         $text = Setting::where('key', 'request.approval.messages')->value('value');
 
         $text = self::replaceString(from: "{{approved_by}}", to: $approved_by, string: $text);
         $text = self::replaceString(from: "{{pegawai}}", to: $pegawai, string: $text);
+        $text = self::replaceString(from: "{{tujuan_pd}}", to: $tujuan_pd, string: $text);
+        $text = self::replaceString(from: "{{tanggal_pd}}", to: $tanggal_pd, string: $text);
+        $text = self::replaceString(from: "{{transportasi_pd}}", to: $transportasi_pd, string: $text);
         $text = self::replaceString(from: "{{link_pengajuan}}", to: $link_pengajuan, string: $text);
         $text = self::replaceString(from: "{{uuid}}", to: $uuid, string: $text);
         

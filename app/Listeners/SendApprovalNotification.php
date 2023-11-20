@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\watifier;
 use App\Events\ApprovalProcessed;
 use App\Services\WatifierService;
+use Carbon\Carbon;
 
 class SendApprovalNotification
 {
@@ -48,6 +49,9 @@ class SendApprovalNotification
                 $this->sendToWhatsapp(
                     approved_by: ['nomor' => $user->pegawai->whatsapp, 'nama' => $user->name],
                     pegawai: $event->pengajuanPerjalananDinas->nama,
+                    tujuan_pd: $event->pengajuanPerjalananDinas->kegiatan->first()->ke_kota,
+                    tanggal_pd: Carbon::parse($event->pengajuanPerjalananDinas->kegiatan->first()->tanggal)->format('d M Y'),
+                    transportasi_pd: $event->pengajuanPerjalananDinas->kegiatan->first()->maskapai,
                     link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id),
                     uuid: $this->uuidGenerate($event->pengajuanPerjalananDinas->id)
                 );
@@ -67,6 +71,9 @@ class SendApprovalNotification
                 $this->sendToWhatsapp(
                     approved_by: ['nomor' => $user->pegawai->whatsapp, 'nama' => $user->name],
                     pegawai: $event->pengajuanPerjalananDinas->nama,
+                    tujuan_pd: $event->pengajuanPerjalananDinas->kegiatan->first()->ke_kota,
+                    tanggal_pd: Carbon::parse($event->pengajuanPerjalananDinas->kegiatan->first()->tanggal)->format('d M Y'),
+                    transportasi_pd: $event->pengajuanPerjalananDinas->kegiatan->first()->maskapai,
                     link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id),
                     uuid: $this->uuidGenerate($event->pengajuanPerjalananDinas->id)
                 );
@@ -85,6 +92,9 @@ class SendApprovalNotification
                 $this->sendToWhatsapp(
                     approved_by: ['nomor' => $user->pegawai->whatsapp, 'nama' => $user->name],
                     pegawai: $event->pengajuanPerjalananDinas->nama,
+                    tujuan_pd: $event->pengajuanPerjalananDinas->kegiatan->first()->ke_kota,
+                    tanggal_pd: Carbon::parse($event->pengajuanPerjalananDinas->kegiatan->first()->tanggal)->format('d M Y'),
+                    transportasi_pd: $event->pengajuanPerjalananDinas->kegiatan->first()->maskapai,
                     link_pengajuan: route('filament.resources.pengajuan-perjalanan-dinas.view', $event->pengajuanPerjalananDinas->id),
                     uuid: $this->uuidGenerate($event->pengajuanPerjalananDinas->id)
                 );
@@ -108,16 +118,16 @@ class SendApprovalNotification
         
     }
 
-    private function sendToWhatsapp(array $approved_by, string $pegawai, string $link_pengajuan, $uuid)
+    private function sendToWhatsapp(array $approved_by, string $pegawai, $tujuan_pd, $tanggal_pd, $transportasi_pd ,string $link_pengajuan, $uuid, )
     { 
         return watifier::sendMessage([
             'id' => WatifierService::transformWhatsapp($approved_by['nomor']), 
-            'message' => WatifierService::requestApprovalMessage(approved_by: $approved_by['nama'], pegawai: $pegawai, link_pengajuan: $link_pengajuan, uuid: $uuid)
+            'message' => WatifierService::requestApprovalMessage(approved_by: $approved_by['nama'], pegawai: $pegawai, tujuan_pd:$tujuan_pd, tanggal_pd: $tanggal_pd, transportasi_pd:$transportasi_pd, link_pengajuan: $link_pengajuan, uuid: $uuid)
         ]);
     }
 
     private function uuidGenerate($id)
     {
-        return '#ASTRA' . $id;
+        return '#PD' . $id;
     }
 }
